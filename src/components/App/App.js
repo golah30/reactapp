@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from 'react';
-// import styled from 'styled-components';
-import Header from '../Header';
-import Footer from '../Footer';
-
-// const sad = styled.div``;
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Promo from '../Promo';
+import Main from '../Main';
+import NotFound from '../NotFound';
 
 class App extends Component {
   render() {
     return (
-      <Fragment>
-        <Header>{}</Header>
-        <Footer>{}</Footer>
-      </Fragment>
+      <Switch>
+        <Route path="/" exact component={Promo} />
+        <Route path="/main" component={Main} />
+        <Route path="*" component={NotFound} />
+      </Switch>
     );
   }
 }

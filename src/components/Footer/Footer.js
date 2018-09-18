@@ -74,22 +74,22 @@ export class Footer extends React.PureComponent {
             <Socials>
               <Social>
                 <DefaultLink vk href="#">
-                  <i class="fa fa-vk" aria-hidden="true" />
+                  <i className="fa fa-vk" aria-hidden="true" />
                 </DefaultLink>
               </Social>
               <Social>
                 <DefaultLink google href="#">
-                  <i class="fa fa-google-plus" aria-hidden="true" />
+                  <i className="fa fa-google-plus" aria-hidden="true" />
                 </DefaultLink>
               </Social>
               <Social>
                 <DefaultLink ln href="#">
-                  <i class="fa fa-linkedin" aria-hidden="true" />
+                  <i className="fa fa-linkedin" aria-hidden="true" />
                 </DefaultLink>
               </Social>
             </Socials>
             <Copy>
-              <i class="fa fa-copyright" aria-hidden="true" />
+              <i className="fa fa-copyright" aria-hidden="true" />
               <span>2011 - 2017</span> NooTron teams
             </Copy>
           </FooterLower>
