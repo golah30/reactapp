@@ -4,10 +4,12 @@ import styled from 'styled-components';
 
 class Method extends PureComponent {
   render() {
-    const { title, caption, img, route, help, alt } = this.props;
+    const { title, caption, img, route, help, alt, className } = this.props;
 
     return alt ? (
-      <div>alt</div>
+      <li className={className}>
+        <AltLink to={route ? route : ''}>{title}</AltLink>
+      </li>
     ) : (
       <Item>
         <Container>
@@ -27,6 +29,10 @@ class Method extends PureComponent {
   }
 }
 
+const AltLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
 const Item = styled.li`
   padding: 24.5px 0;
   border-bottom: 1px solid #95989a;
