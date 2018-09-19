@@ -1,33 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default class Comment extends React.PureComponent {
+export default class TextInput extends React.PureComponent {
   state = {
     value: ''
   };
   handleChange = e => {
-    this.setState({ value: e.target.value });
-    if (this.props.change) this.props.change(e.target.value);
+    const { limit, change } = this.props;
+
+    if (this.state.value.length <= limit) {
+      this.setState({ value: e.target.value });
+      if (change) change(e.target.value);
+    }
   };
   render() {
+    const { limit, title } = this.props;
     return (
       <Container>
-        <Heading>Комментарии:</Heading>
-
+        <Heading>{title}</Heading>
         <Input
           type="text"
           value={this.state.value}
           onChange={this.handleChange}
         />
-        <Restriction>До 100 символов</Restriction>
+        <Restriction>До {limit} символов</Restriction>
       </Container>
     );
   }
 }
+/*  simple usage - <TextInput title={'asd'} limit={100} change={this.handleChange} /> */
 
 const Container = styled.div`
   margin-bottom: 50px;
-  width: 576px;
+  width: 600px;
 `;
 const Heading = styled.div`
   font-size: 20px;

@@ -4,6 +4,12 @@ import Header from '../Header';
 import Footer from '../Footer';
 
 class Main extends Component {
+  state = {
+    val: ''
+  };
+  handleChange = data => {
+    this.setState({ val: data });
+  };
   render() {
     return (
       <Fragment>
