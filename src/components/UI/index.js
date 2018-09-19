@@ -1,2 +1,4 @@
 import Button from './Button';
-export { Button };
+import Comment from './Comment';
+
+export { Button, Comment };
