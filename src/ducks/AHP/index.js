@@ -1,2 +1,7 @@
 export { default } from './reducer';
-export {} from './actions';
+export {
+  setAhpMenu,
+  setAhpTarget,
+  setAhpStage,
+  setAhpPurpose
+} from './actions';

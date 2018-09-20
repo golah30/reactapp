@@ -10,61 +10,79 @@ export class Footer extends React.PureComponent {
           <FooterUpper>
             <Category>
               <CategoryTitle>
-                <StyledLink title to="">
+                <StyledLink title="18" to="">
                   О проекте
                 </StyledLink>
               </CategoryTitle>
               <LinkList>
                 <LinkListElement>
-                  <StyledLink to="">История проекта</StyledLink>
+                  <StyledLink title="14" to="">
+                    История проекта
+                  </StyledLink>
                 </LinkListElement>
                 <LinkListElement>
-                  <StyledLink to="">Кафедра ИТС</StyledLink>
+                  <StyledLink title="14" to="">
+                    Кафедра ИТС
+                  </StyledLink>
                 </LinkListElement>
                 <LinkListElement>
-                  <StyledLink to="">Exigen Agile Practices</StyledLink>
+                  <StyledLink title="14" to="">
+                    Exigen Agile Practices
+                  </StyledLink>
                 </LinkListElement>
               </LinkList>
             </Category>
             <Category>
               <CategoryTitle>
-                <StyledLink title to="">
+                <StyledLink title="18" to="">
                   Помощь
                 </StyledLink>
               </CategoryTitle>
               <LinkList>
                 <LinkListElement>
-                  <StyledLink to="">С чего начать?</StyledLink>
+                  <StyledLink title="14" to="">
+                    С чего начать?
+                  </StyledLink>
                 </LinkListElement>
                 <LinkListElement>
-                  <StyledLink to="">Библиотека методов</StyledLink>
+                  <StyledLink title="14" to="">
+                    Библиотека методов
+                  </StyledLink>
                 </LinkListElement>
               </LinkList>
             </Category>
             <Category>
               <CategoryTitle>
-                <StyledLink title to="">
+                <StyledLink title="18" to="">
                   Исследования
                 </StyledLink>
               </CategoryTitle>
               <LinkList>
                 <LinkListElement>
-                  <StyledLink to="">Прикладные задачи</StyledLink>
+                  <StyledLink title="14" to="">
+                    Прикладные задачи
+                  </StyledLink>
                 </LinkListElement>
                 <LinkListElement>
-                  <StyledLink to="">Публикации</StyledLink>
+                  <StyledLink title="14" to="">
+                    Публикации
+                  </StyledLink>
                 </LinkListElement>
                 <LinkListElement>
-                  <StyledLink to="">Работы студентов</StyledLink>
+                  <StyledLink title="14" to="">
+                    Работы студентов
+                  </StyledLink>
                 </LinkListElement>
                 <LinkListElement>
-                  <StyledLink to="">Блог</StyledLink>
+                  <StyledLink title="14" to="">
+                    Блог
+                  </StyledLink>
                 </LinkListElement>
               </LinkList>
             </Category>
             <Category>
               <CategoryTitle>
-                <StyledLink title to="">
+                <StyledLink title="18" to="">
                   Приложение
                 </StyledLink>
               </CategoryTitle>
@@ -127,7 +145,7 @@ const StyledLink = styled(Link)`
   color: #fafafa;
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
-  font-size: ${props => (props.title ? '18px' : '14px')};
+  font-size: ${props => props.title + 'px'};
   font-weight: 400;
   transition: color 0.5s;
   &:hover {

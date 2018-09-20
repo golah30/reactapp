@@ -5,7 +5,7 @@ export default class Button extends React.PureComponent {
   render() {
     return (
       <StyledButton onClick={this.props.click} disabled={this.props.disabled}>
-        button
+        {this.props.title}
       </StyledButton>
     );
   }

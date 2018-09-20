@@ -2,25 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default class TextInput extends React.PureComponent {
-  state = {
-    value: ''
-  };
   handleChange = e => {
     const { limit, change } = this.props;
 
-    if (this.state.value.length <= limit) {
-      this.setState({ value: e.target.value });
-      if (change) change(e.target.value);
+    if (e.target.value.length <= limit) {
+      if (change) change(e.target.name, e.target.value);
     }
   };
+
   render() {
-    const { limit, title } = this.props;
+    const { limit, title, value, name } = this.props;
     return (
       <Container>
         <Heading>{title}</Heading>
         <Input
           type="text"
-          value={this.state.value}
+          name={name}
+          value={value ? value : ''}
           onChange={this.handleChange}
         />
         <Restriction>До {limit} символов</Restriction>
@@ -32,7 +30,7 @@ export default class TextInput extends React.PureComponent {
 
 const Container = styled.div`
   margin-bottom: 50px;
-  width: 600px;
+  max-width: 600px;
 `;
 const Heading = styled.div`
   font-size: 20px;
