@@ -3,7 +3,9 @@ import {
   setAhpMenu,
   setAhpStage,
   setAhpTarget,
-  setAhpPurpose
+  setAhpPurpose,
+  setAhpCriterias,
+  setAhpAlternatives
 } from './actions';
 
 export default handleActions(
@@ -17,11 +19,21 @@ export default handleActions(
       stage: action.payload
     }),
     [setAhpTarget]: (state, action) => ({ ...state, target: action.payload }),
-    [setAhpPurpose]: (state, action) => ({ ...state, purpose: action.payload })
+    [setAhpPurpose]: (state, action) => ({ ...state, purpose: action.payload }),
+    [setAhpCriterias]: (state, action) => ({
+      ...state,
+      criterias: action.payload
+    }),
+    [setAhpAlternatives]: (state, action) => ({
+      ...state,
+      alternatives: action.payload
+    })
   },
   {
     target: '',
     purpose: { target: '', comment: '' },
+    criterias: [],
+    alternatives: [],
     stage: 0,
     menu: [
       {

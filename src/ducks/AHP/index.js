@@ -3,5 +3,7 @@ export {
   setAhpMenu,
   setAhpTarget,
   setAhpStage,
-  setAhpPurpose
+  setAhpPurpose,
+  setAhpCriterias,
+  setAhpAlternatives
 } from './actions';
