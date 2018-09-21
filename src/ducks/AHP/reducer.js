@@ -34,7 +34,11 @@ export default handleActions(
     purpose: { target: '', comment: '' },
     criterias: [],
     alternatives: [],
-    stage: 0,
+    stage: {
+      main: 0,
+      isSub: false,
+      sub: 0
+    },
     menu: [
       {
         title: 'Начало',
