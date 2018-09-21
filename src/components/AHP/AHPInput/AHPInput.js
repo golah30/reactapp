@@ -18,13 +18,25 @@ class AHPInput extends React.PureComponent {
     isValid: false
   };
   componentDidMount() {
-    this.setState({
-      target: this.props.purpose.target,
-      comment: this.props.purpose.comment,
-      criterias: this.props.criterias,
-      alternatives: this.props.alternatives
-    });
-    if (this.props.stage < 1) this.props.setAhpStage(1);
+    this.setState(
+      {
+        target: this.props.purpose.target,
+        comment: this.props.purpose.comment,
+        criterias: this.props.criterias,
+        alternatives: this.props.alternatives
+      },
+      () => {
+        let isValid = this.isValid();
+        this.setState({ isValid: isValid });
+      }
+    );
+
+    if (this.props.stage.main < 1)
+      this.props.setAhpStage({
+        main: 1,
+        isSub: false,
+        sub: 0
+      });
   }
   componentDidUpdate(prevProps) {
     if (this.props.purpose !== prevProps.purpose) {
