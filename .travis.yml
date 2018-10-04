@@ -11,8 +11,11 @@ cache:
 install:
   - yarn install
 
-before_script:
-  - yarn start -- --silent &
-
 script:
 - yarn build
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: $HEROKU_KEY
+  app: rnoo
