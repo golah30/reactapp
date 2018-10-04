@@ -1,6 +1,18 @@
-sudo: false;
+language: node_js
 
-language: node_js;
-node_js: -9;
+node_js:
+  - 9
 
-branches: only: -master;
+cache:
+  directories:
+    - ~/.npm
+    - ~/.cache
+
+install:
+  - yarn install
+
+before_script:
+  - yarn start -- --silent &
+
+script:
+- yarn build
