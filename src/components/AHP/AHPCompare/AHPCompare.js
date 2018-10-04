@@ -1,5 +1,5 @@
 import React from 'react';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import { setAhpTarget, setAhpStage } from '../../../ducks/AHP';
@@ -17,6 +17,8 @@ class AHPCompare extends React.PureComponent {
     return <div>compare</div>;
   }
 }
+
+const Container = styled.div``;
 
 const mapStateToProps = state => ({
   stage: state.AHP.stage,
