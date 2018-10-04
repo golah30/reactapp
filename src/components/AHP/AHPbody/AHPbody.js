@@ -21,7 +21,6 @@ class AHPbody extends Component {
       JSON.stringify(prevProps.criterias)
     ) {
       this.updateMenuStruct(this.props.criterias);
-      this.forceUpdate();
     }
   }
 
@@ -52,7 +51,8 @@ class AHPbody extends Component {
     );
   }
   updateMenu = stage => {
-    let menu = this.props.menu;
+    let menu = [...this.props.menu];
+
     if (stage.isSub) {
       menu[stage.main].childrens[stage.sub].isAvailable = true;
     } else {
@@ -61,17 +61,16 @@ class AHPbody extends Component {
     this.props.setAhpMenu(menu);
   };
   updateMenuStruct = criterias => {
-    let menu = this.props.menu;
-    let childs = [];
-    for (let index = 0; index < criterias.length; ++index) {
-      childs.push({
-        title: `По критерию "${criterias[index]}"`,
-        route: `/ahp/compare/${index}`,
+    let menu = [...this.props.menu];
+    let childs = criterias.map((item, key) => {
+      return {
+        title: `По критерию "${item}"`,
+        route: `/ahp/compare/${key}`,
         childrens: [],
         isAvailable: false,
         isSubItem: true
-      });
-    }
+      };
+    });
     menu[3].childrens = childs;
     this.props.setAhpMenu(menu);
   };
