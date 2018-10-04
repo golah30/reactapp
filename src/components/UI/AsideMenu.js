@@ -29,8 +29,8 @@ export default class AsideMenu extends React.Component {
       );
     } else {
       return (
-        <Fragment>
-          <Li key={key}>{item.title}</Li>
+        <Fragment key={key}>
+          <Li>{item.title}</Li>
           {item.childrens.map(this.mapCallback)}
         </Fragment>
       );

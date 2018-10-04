@@ -7,6 +7,7 @@ import Footer from '../../Footer';
 import { SubHeader, AsideMenu } from '../../UI';
 import AHPBegin from '../AHPBegin';
 import AHPInput from '../AHPInput';
+import AHPCompare from '../AHPCompare';
 import styled from 'styled-components';
 
 class AHPbody extends Component {
@@ -14,8 +15,12 @@ class AHPbody extends Component {
     this.props.history.push('/ahp/begin');
   }
   componentDidUpdate(prevProps) {
-    if (this.props.stage !== prevProps.stage) {
-      this.updateMenu(this.props.stage);
+    if (this.props.stage !== prevProps.stage) this.updateMenu(this.props.stage);
+    if (
+      JSON.stringify(this.props.criterias) !==
+      JSON.stringify(prevProps.criterias)
+    ) {
+      this.updateMenuStruct(this.props.criterias);
     }
   }
 
@@ -31,9 +36,13 @@ class AHPbody extends Component {
             <Switch>
               <Route path="/ahp/begin" exact component={AHPBegin} />
               <Route path="/ahp/input" exact component={AHPInput} />
-              <Route path="/ahp/compare-criteria" exact component={AHPBegin} />
+              <Route
+                path="/ahp/compare-criteria"
+                exact
+                component={AHPCompare}
+              />
+              <Route path="/ahp/compare/:id" exact component={AHPBegin} />
               <Route path="/ahp/result" exact component={AHPBegin} />
-              {this.routeBuilder()}
             </Switch>
           </Content>
         </Container>
@@ -41,15 +50,29 @@ class AHPbody extends Component {
       </Fragment>
     );
   }
+  updateMenu = stage => {
+    let menu = [...this.props.menu];
 
-  updateMenu = id => {
-    let menu = this.props.menu;
-    menu[id].isAvailable = true;
+    if (stage.isSub) {
+      menu[stage.main].childrens[stage.sub].isAvailable = true;
+    } else {
+      menu[stage.main].isAvailable = true;
+    }
     this.props.setAhpMenu(menu);
   };
-
-  routeBuilder = () => {
-    return <Route path="/ahp/builded" exact component={AHPBegin} />;
+  updateMenuStruct = criterias => {
+    let menu = [...this.props.menu];
+    let childs = criterias.map((item, key) => {
+      return {
+        title: `По критерию "${item}"`,
+        route: `/ahp/compare/${key}`,
+        childrens: [],
+        isAvailable: false,
+        isSubItem: true
+      };
+    });
+    menu[3].childrens = childs;
+    this.props.setAhpMenu(menu);
   };
 }
 
@@ -65,7 +88,8 @@ const Content = styled.div`
 
 const mapStateToProps = state => ({
   menu: state.AHP.menu,
-  stage: state.AHP.stage
+  stage: state.AHP.stage,
+  criterias: state.AHP.criterias
 });
 
 const mapDispatchToProps = { setAhpMenu };
