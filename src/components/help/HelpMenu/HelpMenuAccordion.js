@@ -25,7 +25,7 @@ class HelpMenuAccordion extends React.PureComponent {
             {category.posts.length !== 0
               ? category.posts.map((post, key) => (
                   <Post key={key}>
-                    <PostLink to={`/help/${post.id}`}>{post.title}</PostLink>
+                    <PostLink to={`/help/${post._id}`}>{post.title}</PostLink>
                   </Post>
                 ))
               : 'No posts in this category'}
