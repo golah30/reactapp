@@ -1,2 +1,9 @@
 export { default } from './reducer';
-export { helpRequest, helpSuccess, helpFailure } from './actions';
+export {
+  helpCategoriesRequest,
+  helpCategoriesSuccess,
+  helpCategoriesFailure,
+  helpPostsRequest,
+  helpPostsSuccess,
+  helpPostsFailure
+} from './actions';

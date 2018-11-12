@@ -1,27 +1,58 @@
 import { handleActions } from 'redux-actions';
-import { helpRequest, helpSuccess, helpFailure } from './actions';
+import {
+  helpCategoriesRequest,
+  helpCategoriesSuccess,
+  helpCategoriesFailure,
+  helpPostsRequest,
+  helpPostsSuccess,
+  helpPostsFailure
+} from './actions';
 
 export default handleActions(
   {
-    [helpRequest.toString()]: state => ({
-      result: {},
-      error: null,
-      isFetching: true
+    [helpCategoriesRequest.toString()]: state => ({
+      ...state,
+      isCategoryFetching: true,
+      categoryError: null,
+      categoriesResult: {}
     }),
-    [helpSuccess.toString()]: (state, action) => ({
-      isFetching: false,
-      result: action.payload,
-      error: null
+    [helpCategoriesSuccess.toString()]: (state, action) => ({
+      ...state,
+      isCategoryFetching: false,
+      categoryError: null,
+      categoriesResult: action.payload
     }),
-    [helpFailure.toString()]: (state, action) => ({
-      isFetching: false,
-      error: action.payload,
-      result: {}
+    [helpCategoriesFailure.toString()]: (state, action) => ({
+      ...state,
+      isCategoryFetching: false,
+      categoryError: action.payload,
+      categoriesResult: {}
+    }),
+    [helpPostsRequest.toString()]: state => ({
+      ...state,
+      isPostsFetching: true,
+      postsError: null,
+      postsResult: {}
+    }),
+    [helpPostsSuccess.toString()]: (state, action) => ({
+      ...state,
+      isPostsFetching: false,
+      postsError: null,
+      postsResult: action.payload
+    }),
+    [helpPostsFailure.toString()]: (state, action) => ({
+      ...state,
+      isPostsFetching: false,
+      postsError: action.payload,
+      postsResult: {}
     })
   },
   {
-    isFetching: false,
-    result: {},
-    error: null
+    isCategoryFetching: false,
+    isPostsFetching: false,
+    categoryError: null,
+    postsError: null,
+    categoriesResult: {},
+    postsResult: {}
   }
 );

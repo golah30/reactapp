@@ -2,13 +2,12 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 // import styled from 'styled-components';
 import { SubHeader } from '../../UI';
-import { helpRequest } from '../../../ducks/HELP';
+import { helpPostsRequest } from '../../../ducks/HELP';
+import { POSTS } from '../../../api';
 
 class Post extends React.PureComponent {
   componentWillMount() {
-    this.props.helpRequest(
-      `http://localhost:3000/api/posts/${this.props.match.params.id}`
-    );
+    this.props.helpPostsRequest(`${POSTS}/${this.props.match.params.id}`);
   }
   render = () => {
     const { error, isFetching, result } = this.props;
@@ -29,11 +28,11 @@ class Post extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  isFetching: state.HELP.isFetching,
-  result: state.HELP.result,
-  error: state.HELP.error
+  isFetching: state.HELP.isPostsFetching,
+  result: state.HELP.postsResult,
+  error: state.HELP.postsError
 });
-const mapDispatchToProps = { helpRequest };
+const mapDispatchToProps = { helpPostsRequest };
 
 export default connect(
   mapStateToProps,

@@ -1,9 +1,26 @@
 import { createActions } from 'redux-actions';
 
-const { helpRequest, helpSuccess, helpFailure } = createActions(
-  'HELP_REQUEST',
-  'HELP_SUCCESS',
-  'HELP_FAILURE'
+const {
+  helpCategoriesRequest,
+  helpCategoriesSuccess,
+  helpCategoriesFailure,
+  helpPostsRequest,
+  helpPostsSuccess,
+  helpPostsFailure
+} = createActions(
+  'HELP_CATEGORIES_REQUEST',
+  'HELP_CATEGORIES_SUCCESS',
+  'HELP_CATEGORIES_FAILURE',
+  'HELP_POSTS_REQUEST',
+  'HELP_POSTS_SUCCESS',
+  'HELP_POSTS_FAILURE'
 );
 
-export { helpRequest, helpSuccess, helpFailure };
+export {
+  helpCategoriesRequest,
+  helpCategoriesSuccess,
+  helpCategoriesFailure,
+  helpPostsRequest,
+  helpPostsSuccess,
+  helpPostsFailure
+};

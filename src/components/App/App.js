@@ -7,6 +7,7 @@ import Methods from '../Methods';
 import NotFound from '../NotFound';
 import AHP from '../AHP';
 import WSM from '../WSM';
+import Auth from '../Auth';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
         <Route path="/methods" component={Methods} />
         <Route path="/ahp" component={AHP} />
         <Route path="/wsm" component={WSM} />
+        <Route path="/auth" component={Auth} />
         <Route path="*" component={NotFound} />
       </Switch>
     );
