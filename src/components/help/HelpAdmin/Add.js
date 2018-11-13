@@ -29,9 +29,11 @@ export class Add extends React.PureComponent {
       </Container>
     );
   }
+
   handleCategoryClick = () => {
     this.setState({ category: true, post: false });
   };
+
   handlePostClick = () => {
     this.setState({ category: false, post: true });
   };
