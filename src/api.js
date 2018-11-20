@@ -1,10 +1,22 @@
 import axios from 'axios';
+import { buildQueryFromLPRMatrix } from './helpers';
 
 const basePath = 'http://localhost:3000/api';
 const LOG_IN = `${basePath}/login`;
 const CATEGORIES = `${basePath}/categories`;
 const POSTS = `${basePath}/posts`;
+const MATH = 'http://localhost:8080/pure-noo-17';
 
+export const getLocalPriorities = payload => {
+  return axios(buildQueryFromLPRMatrix(MATH, payload));
+};
+export const getQuery = payload => {
+  return axios(payload);
+};
+
+export const loginQuery = payload => {
+  return axios.post(LOG_IN, payload);
+};
 export const putCategory = (id, token, data) => {
   return axios.put(`${CATEGORIES}/${id}`, data, {
     headers: { Authorization: token }
