@@ -1,80 +1,19 @@
-import { handleActions } from 'redux-actions';
-import {
-  setAhpMenu,
-  setAhpStage,
-  setAhpTarget,
-  setAhpPurpose,
-  setAhpCriterias,
-  setAhpAlternatives
-} from './actions';
+import { combineReducers } from 'redux';
 
-export default handleActions(
-  {
-    [setAhpMenu]: (state, action) => ({
-      ...state,
-      menu: action.payload
-    }),
-    [setAhpStage]: (state, action) => ({
-      ...state,
-      stage: action.payload
-    }),
-    [setAhpTarget]: (state, action) => ({ ...state, target: action.payload }),
-    [setAhpPurpose]: (state, action) => ({ ...state, purpose: action.payload }),
-    [setAhpCriterias]: (state, action) => ({
-      ...state,
-      criterias: action.payload
-    }),
-    [setAhpAlternatives]: (state, action) => ({
-      ...state,
-      alternatives: action.payload
-    })
-  },
-  {
-    target: '',
-    purpose: { target: '', comment: '' },
-    criterias: [],
-    alternatives: [],
-    stage: {
-      main: 0,
-      isSub: false,
-      sub: 0
-    },
-    menu: [
-      {
-        title: 'Начало',
-        route: '/ahp/begin',
-        childrens: [],
-        isAvailable: true,
-        isSubItem: false
-      },
-      {
-        title: 'Ввод данных',
-        route: '/ahp/input',
-        childrens: [],
-        isAvailable: false,
-        isSubItem: false
-      },
-      {
-        title: 'Парные сравнения критериев',
-        route: '/ahp/compare-criteria',
-        childrens: [],
-        isAvailable: false,
-        isSubItem: false
-      },
-      {
-        title: 'Парные сравнения альтернатив',
-        route: '',
-        childrens: [],
-        isAvailable: false,
-        isSubItem: false
-      },
-      {
-        title: 'Результат',
-        route: '/ahp/result',
-        childrens: [],
-        isAvailable: false,
-        isSubItem: false
-      }
-    ]
-  }
-);
+import target from './reducers/target';
+import purpose from './reducers/purpose';
+import criterias from './reducers/criterias';
+import alternatives from './reducers/alternatives';
+import stage from './reducers/stage';
+import menu from './reducers/menu';
+import LPRs from './reducers/LPRs';
+
+export default combineReducers({
+  target,
+  purpose,
+  criterias,
+  alternatives,
+  LPRs,
+  menu,
+  stage
+});

@@ -5,5 +5,8 @@ export {
   setAhpStage,
   setAhpPurpose,
   setAhpCriterias,
-  setAhpAlternatives
+  setAhpAlternatives,
+  ahpLprRequest,
+  ahpLprSuccess,
+  ahpLprFailure
 } from './actions';
