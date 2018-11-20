@@ -134,7 +134,7 @@ class AHPInput extends React.PureComponent {
     });
     this.props.setAhpCriterias(this.state.criterias);
     this.props.setAhpAlternatives(this.state.alternatives);
-    this.props.history.push('/ahp/compare-criteria');
+    this.props.history.push('/ahp/compare/0');
   };
   isValid = () => {
     if (this.state.target.length === 0) return false;

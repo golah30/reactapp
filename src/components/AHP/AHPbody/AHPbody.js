@@ -9,13 +9,15 @@ import AHPBegin from '../AHPBegin';
 import AHPInput from '../AHPInput';
 import AHPCompare from '../AHPCompare';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 class AHPbody extends Component {
   componentDidMount() {
     this.props.history.push('/ahp/begin');
   }
   componentDidUpdate(prevProps) {
-    if (this.props.stage !== prevProps.stage) this.updateMenu(this.props.stage);
+    if (!_.isEqual(this.props.stage, prevProps.stage))
+      this.updateMenu(this.props.stage);
     if (
       JSON.stringify(this.props.criterias) !==
       JSON.stringify(prevProps.criterias)
@@ -36,12 +38,7 @@ class AHPbody extends Component {
             <Switch>
               <Route path="/ahp/begin" exact component={AHPBegin} />
               <Route path="/ahp/input" exact component={AHPInput} />
-              <Route
-                path="/ahp/compare-criteria"
-                exact
-                component={AHPCompare}
-              />
-              <Route path="/ahp/compare/:id" exact component={AHPBegin} />
+              <Route path="/ahp/compare/:id" exact component={AHPCompare} />
               <Route path="/ahp/result" exact component={AHPBegin} />
             </Switch>
           </Content>
@@ -51,21 +48,38 @@ class AHPbody extends Component {
     );
   }
   updateMenu = stage => {
-    let menu = [...this.props.menu];
+    let menu = _.cloneDeep(this.props.menu);
+
+    for (let i = 0; i < menu.length; ++i) {
+      if (i <= stage.main) {
+        menu[i].isAvailable = true;
+      } else {
+        menu[i].isAvailable = false;
+      }
+    }
 
     if (stage.isSub) {
-      menu[stage.main].childrens[stage.sub].isAvailable = true;
-    } else {
-      menu[stage.main].isAvailable = true;
+      for (let i = 0; i < menu[stage.main].childrens.length; ++i) {
+        if (i <= stage.sub) {
+          menu[stage.main].childrens[i].isAvailable = true;
+        } else {
+          menu[stage.main].childrens[i].isAvailable = false;
+        }
+      }
     }
+    // if (stage.isSub) {
+    //   menu[stage.main].childrens[stage.sub].isAvailable = true;
+    // } else {
+    //   menu[stage.main].isAvailable = true;
+    // }
     this.props.setAhpMenu(menu);
   };
   updateMenuStruct = criterias => {
-    let menu = [...this.props.menu];
+    let menu = _.cloneDeep(this.props.menu);
     let childs = criterias.map((item, key) => {
       return {
         title: `По критерию "${item}"`,
-        route: `/ahp/compare/${key}`,
+        route: `/ahp/compare/${key + 1}`,
         childrens: [],
         isAvailable: false,
         isSubItem: true
