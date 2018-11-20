@@ -5,7 +5,7 @@ const basePath = 'http://localhost:3000/api';
 const LOG_IN = `${basePath}/login`;
 const CATEGORIES = `${basePath}/categories`;
 const POSTS = `${basePath}/posts`;
-const MATH = 'http://localhost:8080/pure-noo-17';
+const MATH = 'http://localhost:8080';
 
 export const getLocalPriorities = payload => {
   return axios(buildQueryFromLPRMatrix(MATH, payload));

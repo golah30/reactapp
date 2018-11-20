@@ -9,8 +9,6 @@ class PriorityTable extends React.Component {
   componentDidMount() {
     const { values, comparedItems } = this.props;
     if (values !== null && values.length !== 0) {
-      console.log('from props');
-
       this.setState({ cells: values }, () => {
         this.props.change(values);
       });
@@ -36,7 +34,6 @@ class PriorityTable extends React.Component {
 
     return (
       <Fragment>
-        <div>PriorityTable</div>
         <Table>
           <Body>
             <Row>

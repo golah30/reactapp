@@ -6,8 +6,10 @@ import AsideMenu from './AsideMenu';
 import DataList from './DataList';
 import PriorityTable from './PriorityTable';
 import Indicators from './Indicators';
+import RadioGroup from './RadioGroup';
 
 export {
+  RadioGroup,
   Button,
   TextInput,
   CheckBox,

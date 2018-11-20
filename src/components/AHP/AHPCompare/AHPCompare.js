@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { PriorityTable, Indicators, Button } from '../../UI';
+import { PriorityTable, Indicators, Button, RadioGroup } from '../../UI';
 
 import {
   setAhpTarget,
@@ -13,7 +13,8 @@ import {
 class AHPCompare extends React.PureComponent {
   state = {
     table: [],
-    isTableValid: false
+    isTableValid: false,
+    radio: {}
   };
   componentDidMount() {
     const { LPRs, criterias } = this.props;
@@ -62,6 +63,10 @@ class AHPCompare extends React.PureComponent {
             </Fragment>
           )}
         </Heading>
+        <RadioGroup
+          value={{ type: 'compare', insert: 'auto' }}
+          change={this.handleRadioChange}
+        />
         <PriorityTable
           values={
             LPRs[pageId] && LPRs[pageId].table ? LPRs[pageId].table : null
@@ -107,6 +112,9 @@ class AHPCompare extends React.PureComponent {
   };
   handleTableChange = cells => {
     this.setState({ table: cells }, this.isValid);
+  };
+  handleRadioChange = radio => {
+    this.setState({ radio: radio });
   };
 }
 
