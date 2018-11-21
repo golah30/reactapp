@@ -11,11 +11,7 @@ class AHPBegin extends React.PureComponent {
   componentDidMount() {
     this.setState({ target: this.props.target });
   }
-  componentDidUpdate(prevProps) {
-    if (this.props.target !== prevProps.target) {
-      this.setState({ target: this.props.target });
-    }
-  }
+
   handleChange = (name, data) => {
     this.setState({ [name]: data });
   };

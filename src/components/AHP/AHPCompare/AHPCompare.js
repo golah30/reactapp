@@ -1,7 +1,13 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { PriorityTable, Indicators, Button, RadioGroup } from '../../UI';
+import {
+  PriorityTable,
+  Indicators,
+  Button,
+  RadioGroup,
+  TextInput
+} from '../../UI';
 
 import {
   setAhpTarget,
@@ -14,13 +20,15 @@ class AHPCompare extends React.PureComponent {
   state = {
     table: [],
     isTableValid: false,
-    radio: {}
+    radio: {},
+    comment: ''
   };
   componentDidMount() {
     const { LPRs, criterias } = this.props;
+    const id = parseInt(this.props.match.params.id, 10);
 
     let stage = {};
-    if (this.props.match.params.id === '0') {
+    if (id === 0) {
       if (LPRs.length !== criterias.length + 1) {
         let array = [{}];
         for (let i = 0; i < criterias.length; ++i) array.push({});
@@ -31,16 +39,21 @@ class AHPCompare extends React.PureComponent {
         isSub: false,
         sub: 0
       };
-    } else if (this.props.match.params.id !== '0') {
+    } else if (id !== 0) {
       stage = {
         main: 3,
         isSub: true,
-        sub: this.props.match.params.id - 1
+        sub: id - 1
       };
+    }
+
+    if (LPRs[id] && LPRs[id].comment) {
+      this.setState({ comment: LPRs[id].comment });
     }
 
     this.props.setAhpStage(stage);
   }
+
   render() {
     const pageId = parseInt(this.props.match.params.id, 10);
     const { criterias, alternatives, LPRs } = this.props;
@@ -63,10 +76,15 @@ class AHPCompare extends React.PureComponent {
             </Fragment>
           )}
         </Heading>
-        <RadioGroup
-          value={{ type: 'compare', insert: 'auto' }}
-          change={this.handleRadioChange}
-        />
+        <RadioGroupContainer>
+          <RadioGroup
+            value={
+              LPRs[pageId] && LPRs[pageId].radio ? LPRs[pageId].radio : null
+            }
+            change={this.handleRadioChange}
+          />
+        </RadioGroupContainer>
+
         <PriorityTable
           values={
             LPRs[pageId] && LPRs[pageId].table ? LPRs[pageId].table : null
@@ -74,6 +92,7 @@ class AHPCompare extends React.PureComponent {
           localPriorities={
             LPRs[pageId] && LPRs[pageId].lpr ? LPRs[pageId].lpr : null
           }
+          radio={this.state.radio}
           comparedItems={pageId === 0 ? criterias : alternatives}
           change={this.handleTableChange}
         />
@@ -84,20 +103,41 @@ class AHPCompare extends React.PureComponent {
               : null
           }
         />
-        <Button
-          title={'Вычислить'}
-          disabled={!this.state.isTableValid}
-          click={this.calcLPRs}
-        />
+
+        <TextInputContainer>
+          <TextInput
+            title={'Комментарии:'}
+            limit={100}
+            name={'comment'}
+            value={this.state.comment}
+            change={this.handleCommentChange}
+          />
+        </TextInputContainer>
+        <ButtonContainer>
+          <Button
+            title={'Вычислить'}
+            disabled={!this.state.isTableValid}
+            click={this.calcLPRs}
+          />
+          <Button
+            title="Далее"
+            disabled={!this.state.isValid}
+            click={this.handleSubmit}
+          />
+        </ButtonContainer>
       </Fragment>
     );
   }
 
   calcLPRs = () => {
-    const data = this.state.table;
+    const { table, radio, comment } = this.state;
+    const id = this.props.match.params.id;
+
     this.props.ahpLprRequest({
-      id: 0,
-      table: data
+      id: id,
+      table: table,
+      radio: radio,
+      comment: comment
     });
   };
   isValid = () => {
@@ -109,6 +149,9 @@ class AHPCompare extends React.PureComponent {
         if (!cell.valid) return this.setState({ isTableValid: false });
 
     return this.setState({ isTableValid: true });
+  };
+  handleCommentChange = (name, data) => {
+    this.setState({ [name]: data });
   };
   handleTableChange = cells => {
     this.setState({ table: cells }, this.isValid);
@@ -130,6 +173,19 @@ const Purpose = styled.span`
   width: 538px;
   font-size: 18px;
 `;
+const TextInputContainer = styled.div`
+  margin-bottom: 50px;
+`;
+const RadioGroupContainer = styled.div`
+  margin-bottom: 30px;
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  max-width: 475px;
+  justify-content: space-between;
+  margin-bottom: 200px;
+`;
+
 const mapStateToProps = state => ({
   stage: state.AHP.stage,
   target: state.AHP.purpose.target,
