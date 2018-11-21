@@ -6,17 +6,22 @@ import _ from 'lodash';
 const getLPRs = state => state.AHP.LPRs.data;
 
 const editData = (currentLPRs, response, payload) => {
-  const { id, table } = payload;
+  const { id, table, radio, comment } = payload;
   const resData = response.data;
   let LPRs = _.cloneDeep(currentLPRs);
   const lpr = resData.localPriorities;
   const indicators = [resData.dim, resData.lam, resData.ci, resData.cr];
 
-  if (!_.isEqual(LPRs[id].table, table)) {
+  if (
+    !_.isEqual(LPRs[id].table, table) ||
+    !_.isEqual(LPRs[id].comment, comment)
+  ) {
     LPRs[id] = {
       table,
       lpr,
-      indicators
+      indicators,
+      radio,
+      comment
     };
   }
   return LPRs;

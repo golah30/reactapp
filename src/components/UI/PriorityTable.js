@@ -4,7 +4,8 @@ import _ from 'lodash';
 
 class PriorityTable extends React.Component {
   state = {
-    cells: []
+    cells: [],
+    radio: {}
   };
   componentDidMount() {
     const { values, comparedItems } = this.props;
@@ -28,10 +29,14 @@ class PriorityTable extends React.Component {
       this.setState({ cells: cells });
     }
   }
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props.radio, prevProps.radio)) {
+      this.setState({ radio: this.props.radio });
+    }
+  }
 
   render() {
     const { comparedItems, localPriorities } = this.props;
-
     return (
       <Fragment>
         <Table>

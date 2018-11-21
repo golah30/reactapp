@@ -103,6 +103,7 @@ const Container = styled.div`
 `;
 const Group = styled.div`
   padding-left: ${props => (props.sub ? '20px' : '0')};
+  margin-bottom: ${props => (props.sub ? '0' : '10px')};
 `;
 const RadioWrap = styled.div`
   position: relative;
