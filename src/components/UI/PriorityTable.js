@@ -8,8 +8,23 @@ class PriorityTable extends React.Component {
     radio: {}
   };
   componentDidMount() {
+    this.setStateFromProps();
+  }
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props.radio, prevProps.radio)) {
+      this.setState({ radio: this.props.radio });
+    }
+    if (!_.isEqual(this.props.values, prevProps.values)) {
+      this.setStateFromProps();
+    }
+  }
+  setStateFromProps = () => {
     const { values, comparedItems } = this.props;
-    if (values !== null && values.length !== 0) {
+    if (
+      values !== null &&
+      values.length !== 0 &&
+      values.length === comparedItems.length
+    ) {
       this.setState({ cells: values }, () => {
         this.props.change(values);
       });
@@ -28,15 +43,13 @@ class PriorityTable extends React.Component {
       }
       this.setState({ cells: cells });
     }
-  }
-  componentDidUpdate(prevProps) {
-    if (!_.isEqual(this.props.radio, prevProps.radio)) {
-      this.setState({ radio: this.props.radio });
-    }
-  }
-
+  };
   render() {
-    const { comparedItems, localPriorities } = this.props;
+    const { comparedItems } = this.props;
+    if (comparedItems)
+      if (this.state.cells.length !== comparedItems.length) {
+        return null;
+      }
     return (
       <Fragment>
         <Table>
@@ -51,38 +64,55 @@ class PriorityTable extends React.Component {
               ))}
               <TitleCell>ЛПр.</TitleCell>
             </Row>
-
-            {comparedItems.map((item, rowId) => (
-              <Row key={rowId}>
-                <TitleCell>{rowId + 1}</TitleCell>
-                <TitleCell white>{item}</TitleCell>
-                {comparedItems.map((_item, colId) => (
-                  <Fragment key={colId}>
-                    <Cell
-                      row={rowId}
-                      col={colId}
-                      change={this.handleChange}
-                      value={
-                        this.state.cells.length > 0
-                          ? this.state.cells[rowId][colId].value
-                          : ''
-                      }
-                    />
-                  </Fragment>
-                ))}
-                <TitleCell white>
-                  {localPriorities && localPriorities[rowId].lpr
-                    ? localPriorities[rowId].lpr
-                    : '-'}
-                </TitleCell>
-              </Row>
-            ))}
+            {this.renderCellsByRadioConrols()}
           </Body>
         </Table>
       </Fragment>
     );
   }
+  renderCellsByRadioConrols = () => {
+    if (_.isEqual(this.state.radio, {})) {
+      return null;
+    }
 
+    const { comparedItems, localPriorities } = this.props;
+
+    if (this.state.radio.type === 'insert') {
+      return (
+        <Fragment>
+          {comparedItems.map((item, rowId) => (
+            <Row key={rowId}>
+              <TitleCell>{rowId + 1}</TitleCell>
+              <TitleCell white>{item}</TitleCell>
+              {comparedItems.map((_item, colId) => (
+                <Fragment key={colId}>
+                  <Cell
+                    row={rowId}
+                    col={colId}
+                    off={colId <= rowId}
+                    change={this.handleChange}
+                    value={
+                      this.state.cells.length > 0
+                        ? this.state.cells[rowId][colId].value
+                        : ''
+                    }
+                  />
+                </Fragment>
+              ))}
+              <TitleCell white>
+                {localPriorities && localPriorities[rowId].lpr
+                  ? localPriorities[rowId].lpr
+                  : '-'}
+              </TitleCell>
+            </Row>
+          ))}
+        </Fragment>
+      );
+    }
+
+    if (this.state.radio.type === 'compare') {
+    }
+  };
   handleChange = (row, col, data) => {
     const { change } = this.props;
     let items = _.cloneDeep(this.state.cells);
@@ -123,15 +153,9 @@ class Cell extends React.PureComponent {
     return reg.test(value);
   };
   render() {
-    const { row, col, value } = this.props;
+    const { value, off } = this.props;
 
-    if (col === row) {
-      return (
-        <CellContainer gray>
-          <CellInput type="text" value={'1'} readOnly={true} />
-        </CellContainer>
-      );
-    } else if (col < row) {
+    if (off) {
       return (
         <CellContainer gray>
           <CellInput type="text" value={value ? value : ''} readOnly={true} />
@@ -185,3 +209,51 @@ const CellInput = styled.input`
 `;
 
 export default PriorityTable;
+
+// render() {
+//   const { comparedItems, localPriorities } = this.props;
+//   return (
+//     <Fragment>
+//       <Table>
+//         <Body>
+//           <Row>
+//             <TitleCell>{}</TitleCell>
+//             <TitleCell>Название</TitleCell>
+//             {comparedItems.map((_item, colId) => (
+//               <Fragment key={colId}>
+//                 <TitleCell>{colId + 1}</TitleCell>
+//               </Fragment>
+//             ))}
+//             <TitleCell>ЛПр.</TitleCell>
+//           </Row>
+
+//           {comparedItems.map((item, rowId) => (
+//             <Row key={rowId}>
+//               <TitleCell>{rowId + 1}</TitleCell>
+//               <TitleCell white>{item}</TitleCell>
+//               {comparedItems.map((_item, colId) => (
+//                 <Fragment key={colId}>
+//                   <Cell
+//                     row={rowId}
+//                     col={colId}
+//                     change={this.handleChange}
+//                     value={
+//                       this.state.cells.length > 0
+//                         ? this.state.cells[rowId][colId].value
+//                         : ''
+//                     }
+//                   />
+//                 </Fragment>
+//               ))}
+//               <TitleCell white>
+//                 {localPriorities && localPriorities[rowId].lpr
+//                   ? localPriorities[rowId].lpr
+//                   : '-'}
+//               </TitleCell>
+//             </Row>
+//           ))}
+//         </Body>
+//       </Table>
+//     </Fragment>
+//   );
+// }

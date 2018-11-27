@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button, TextInput, DataList } from '../../UI';
 import {
-  setAhpStage,
   setAhpPurpose,
   setAhpCriterias,
   setAhpAlternatives
@@ -30,13 +29,6 @@ class AHPInput extends React.PureComponent {
         this.setState({ isValid: isValid });
       }
     );
-
-    if (this.props.stage.main < 1)
-      this.props.setAhpStage({
-        main: 1,
-        isSub: false,
-        sub: 0
-      });
   }
   componentDidUpdate(prevProps) {
     if (this.props.purpose !== prevProps.purpose) {
@@ -174,13 +166,11 @@ const ButtonContainer = styled.div`
 `;
 
 const mapStateToProps = state => ({
-  stage: state.AHP.stage,
   purpose: state.AHP.purpose,
   criterias: state.AHP.criterias,
   alternatives: state.AHP.alternatives
 });
 const mapDispatchToProps = {
-  setAhpStage,
   setAhpPurpose,
   setAhpCriterias,
   setAhpAlternatives

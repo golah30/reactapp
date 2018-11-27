@@ -16,13 +16,18 @@ class AHPbody extends Component {
     this.props.history.push('/ahp/begin');
   }
   componentDidUpdate(prevProps) {
-    if (!_.isEqual(this.props.stage, prevProps.stage))
-      this.updateMenu(this.props.stage);
+    const { target, purpose, criterias, LPRs } = this.props;
+    if (!_.isEqual(target, prevProps.target)) {
+      this.updateMenu(1);
+    }
     if (
-      JSON.stringify(this.props.criterias) !==
-      JSON.stringify(prevProps.criterias)
+      !_.isEqual(purpose, prevProps.purpose) ||
+      !_.isEqual(criterias, prevProps.criterias)
     ) {
-      this.updateMenuStruct(this.props.criterias);
+      this.updateMenu(2);
+    }
+    if (!_.isEqual(LPRs, prevProps.LPRs)) {
+      this.updateMenu(3);
     }
   }
 
@@ -33,7 +38,7 @@ class AHPbody extends Component {
         <Header />
         <SubHeader title={'Метод анализа иерархий'} />
         <Container>
-          <AsideMenu data={menu}>{}</AsideMenu>
+          <AsideMenu data={menu} />
           <Content>
             <Switch>
               <Route path="/ahp/begin" exact component={AHPBegin} />
@@ -49,43 +54,59 @@ class AHPbody extends Component {
   }
   updateMenu = stage => {
     let menu = _.cloneDeep(this.props.menu);
+    const { target, purpose, criterias, LPRs } = this.props;
 
-    for (let i = 0; i < menu.length; ++i) {
-      if (i <= stage.main) {
-        menu[i].isAvailable = true;
+    if (stage === 1) {
+      if (target !== '') {
+        menu[stage].isAvailable = true;
       } else {
-        menu[i].isAvailable = false;
+        menu[stage].isAvailable = false;
       }
     }
-
-    if (stage.isSub) {
-      for (let i = 0; i < menu[stage.main].childrens.length; ++i) {
-        if (i <= stage.sub) {
-          menu[stage.main].childrens[i].isAvailable = true;
+    if (stage === 2) {
+      if (purpose.target !== '' && criterias.length !== 0) {
+        menu[stage].isAvailable = true;
+        let childs = criterias.map((item, key) => {
+          return {
+            title: `По критерию "${item}"`,
+            route: `/ahp/compare/${key + 1}`,
+            childrens: [],
+            isAvailable: false,
+            isSubItem: true
+          };
+        });
+        menu[3].childrens = childs;
+      } else {
+        menu[stage].isAvailable = false;
+      }
+    }
+    if (stage === 3) {
+      if (LPRs.length !== 0) {
+        if (LPRs[0] && !_.isEqual(LPRs[0], {})) {
+          menu[stage].isAvailable = true;
+          menu[stage].childrens[0].isAvailable = true;
         } else {
-          menu[stage.main].childrens[i].isAvailable = false;
+          menu[stage].isAvailable = false;
+          menu[stage].childrens[0].isAvailable = false;
+        }
+
+        for (let i = 0; i < menu[stage].childrens.length; ++i) {
+          if (LPRs[i + 1] && !_.isEqual(LPRs[i + 1], {})) {
+            menu[stage].childrens[i].isAvailable = true;
+          } else {
+            menu[stage].childrens[i].isAvailable = false;
+          }
+        }
+        if (
+          LPRs[menu[stage].childrens.length] &&
+          !_.isEqual(LPRs[menu[stage].childrens.length], {})
+        ) {
+          menu[4].isAvailable = true;
+        } else {
+          menu[4].isAvailable = false;
         }
       }
     }
-    // if (stage.isSub) {
-    //   menu[stage.main].childrens[stage.sub].isAvailable = true;
-    // } else {
-    //   menu[stage.main].isAvailable = true;
-    // }
-    this.props.setAhpMenu(menu);
-  };
-  updateMenuStruct = criterias => {
-    let menu = _.cloneDeep(this.props.menu);
-    let childs = criterias.map((item, key) => {
-      return {
-        title: `По критерию "${item}"`,
-        route: `/ahp/compare/${key + 1}`,
-        childrens: [],
-        isAvailable: false,
-        isSubItem: true
-      };
-    });
-    menu[3].childrens = childs;
     this.props.setAhpMenu(menu);
   };
 }
@@ -102,8 +123,10 @@ const Content = styled.div`
 
 const mapStateToProps = state => ({
   menu: state.AHP.menu,
-  stage: state.AHP.stage,
-  criterias: state.AHP.criterias
+  target: state.AHP.target,
+  purpose: state.AHP.purpose,
+  criterias: state.AHP.criterias,
+  LPRs: state.AHP.LPRs.data
 });
 
 const mapDispatchToProps = { setAhpMenu };

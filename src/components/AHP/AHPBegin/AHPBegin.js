@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button, TextInput } from '../../UI';
-import { setAhpTarget, setAhpStage } from '../../../ducks/AHP';
+import { setAhpTarget } from '../../../ducks/AHP';
 
 class AHPBegin extends React.PureComponent {
   state = {
@@ -62,7 +62,7 @@ const ButtonContainer = styled.div`
 const mapStateToProps = state => ({
   target: state.AHP.target
 });
-const mapDispatchToProps = { setAhpTarget, setAhpStage };
+const mapDispatchToProps = { setAhpTarget };
 export default connect(
   mapStateToProps,
   mapDispatchToProps

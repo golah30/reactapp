@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import {
   PriorityTable,
   Indicators,
@@ -8,13 +9,7 @@ import {
   RadioGroup,
   TextInput
 } from '../../UI';
-
-import {
-  setAhpTarget,
-  setAhpStage,
-  ahpLprRequest,
-  ahpLprSuccess
-} from '../../../ducks/AHP';
+import { setAhpTarget, ahpLprRequest, ahpLprSuccess } from '../../../ducks/AHP';
 
 class AHPCompare extends React.PureComponent {
   state = {
@@ -27,36 +22,24 @@ class AHPCompare extends React.PureComponent {
     const { LPRs, criterias } = this.props;
     const id = parseInt(this.props.match.params.id, 10);
 
-    let stage = {};
     if (id === 0) {
       if (LPRs.length !== criterias.length + 1) {
         let array = [{}];
         for (let i = 0; i < criterias.length; ++i) array.push({});
         this.props.ahpLprSuccess(array);
       }
-      stage = {
-        main: 2,
-        isSub: false,
-        sub: 0
-      };
-    } else if (id !== 0) {
-      stage = {
-        main: 3,
-        isSub: true,
-        sub: id - 1
-      };
     }
 
     if (LPRs[id] && LPRs[id].comment) {
       this.setState({ comment: LPRs[id].comment });
     }
-
-    this.props.setAhpStage(stage);
   }
+  componentDidUpdate(prevProps) {}
 
   render() {
     const pageId = parseInt(this.props.match.params.id, 10);
     const { criterias, alternatives, LPRs } = this.props;
+
     return (
       <Fragment>
         <Heading>
@@ -121,14 +104,25 @@ class AHPCompare extends React.PureComponent {
           />
           <Button
             title="Далее"
-            disabled={!this.state.isValid}
+            disabled={!(LPRs[pageId] && !_.isEqual(LPRs[pageId], {}))}
             click={this.handleSubmit}
           />
         </ButtonContainer>
       </Fragment>
     );
   }
-
+  handleSubmit = () => {
+    const { LPRs } = this.props;
+    const id = parseInt(this.props.match.params.id, 10);
+    const length = LPRs.length;
+    if (LPRs[id] && !_.isEqual(LPRs[id], {})) {
+      if (id + 1 < length) {
+        this.props.history.push(`/ahp/compare/${id + 1}`);
+      } else {
+        this.props.history.push('/ahp/result');
+      }
+    }
+  };
   calcLPRs = () => {
     const { table, radio, comment } = this.state;
     const id = this.props.match.params.id;
@@ -194,7 +188,6 @@ const mapStateToProps = state => ({
   alternatives: state.AHP.alternatives
 });
 const mapDispatchToProps = {
-  setAhpStage,
   setAhpTarget,
   ahpLprRequest,
   ahpLprSuccess
