@@ -8,6 +8,7 @@ import { SubHeader, AsideMenu } from '../../UI';
 import AHPBegin from '../AHPBegin';
 import AHPInput from '../AHPInput';
 import AHPCompare from '../AHPCompare';
+import AHPResult from '../AHPResult';
 import styled from 'styled-components';
 import _ from 'lodash';
 
@@ -44,7 +45,7 @@ class AHPbody extends Component {
               <Route path="/ahp/begin" exact component={AHPBegin} />
               <Route path="/ahp/input" exact component={AHPInput} />
               <Route path="/ahp/compare/:id" exact component={AHPCompare} />
-              <Route path="/ahp/result" exact component={AHPBegin} />
+              <Route path="/ahp/result" exact component={AHPResult} />
             </Switch>
           </Content>
         </Container>
@@ -91,7 +92,7 @@ class AHPbody extends Component {
         }
 
         for (let i = 0; i < menu[stage].childrens.length; ++i) {
-          if (LPRs[i + 1] && !_.isEqual(LPRs[i + 1], {})) {
+          if (LPRs[i] && !_.isEqual(LPRs[i], {})) {
             menu[stage].childrens[i].isAvailable = true;
           } else {
             menu[stage].childrens[i].isAvailable = false;

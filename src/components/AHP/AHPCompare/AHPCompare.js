@@ -11,7 +11,7 @@ import {
 } from '../../UI';
 import { setAhpTarget, ahpLprRequest, ahpLprSuccess } from '../../../ducks/AHP';
 
-class AHPCompare extends React.PureComponent {
+class AHPCompare extends React.Component {
   state = {
     table: [],
     isTableValid: false,
@@ -34,7 +34,6 @@ class AHPCompare extends React.PureComponent {
       this.setState({ comment: LPRs[id].comment });
     }
   }
-  componentDidUpdate(prevProps) {}
 
   render() {
     const pageId = parseInt(this.props.match.params.id, 10);
@@ -67,7 +66,6 @@ class AHPCompare extends React.PureComponent {
             change={this.handleRadioChange}
           />
         </RadioGroupContainer>
-
         <PriorityTable
           values={
             LPRs[pageId] && LPRs[pageId].table ? LPRs[pageId].table : null
@@ -79,6 +77,7 @@ class AHPCompare extends React.PureComponent {
           comparedItems={pageId === 0 ? criterias : alternatives}
           change={this.handleTableChange}
         />
+
         <Indicators
           values={
             LPRs[pageId] && LPRs[pageId].indicators

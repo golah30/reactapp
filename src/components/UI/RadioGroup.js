@@ -1,22 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
 import AnimateHeight from 'react-animate-height';
+import _ from 'lodash';
 
 class RadioGroup extends React.PureComponent {
   state = {
     type: 'insert',
-    insert: 'manual'
+    insert: 'manual',
+    relative: 'max'
   };
   componentDidMount() {
+    this.setStateFromProps();
+  }
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props.value, prevProps.value)) {
+      this.setStateFromProps();
+    }
+  }
+  setStateFromProps = () => {
     const { value, change } = this.props;
     if (value && value.type) {
-      this.setState({ type: value.type, insert: value.insert }, () => {
-        if (change)
-          change({ type: this.state.type, insert: this.state.insert });
-      });
+      this.setState(
+        { type: value.type, insert: value.insert, relative: value.relative },
+        () => {
+          if (change)
+            change({
+              type: this.state.type,
+              insert: this.state.insert,
+              relative: this.state.relative
+            });
+        }
+      );
+    } else {
+      if (change)
+        change({
+          type: this.state.type,
+          insert: this.state.insert,
+          relative: this.state.relative
+        });
     }
-    if (change) change({ type: this.state.type, insert: this.state.insert });
-  }
+  };
   render() {
     return (
       <Container>
@@ -63,12 +86,49 @@ class RadioGroup extends React.PureComponent {
             change={this.handleChange}
           />
         </Group>
+        <Group>
+          <Radio
+            sub={false}
+            name="type"
+            value="relative"
+            checked={this.state.type === 'relative'}
+            label={'Используя шкалу отношений'}
+            change={this.handleChange}
+          />
+          <AnimateHeight
+            duration={500}
+            height={this.state.type === 'relative' ? 'auto' : 0}
+          >
+            <Group sub>
+              <Radio
+                sub={true}
+                name="relative"
+                value="max"
+                checked={this.state.relative === 'max'}
+                label={'Чем больше, тем лучше'}
+                change={this.handleChange}
+              />
+              <Radio
+                sub={true}
+                name="relative"
+                value="min"
+                checked={this.state.relative === 'min'}
+                label={'Чем меньше, тем лучше'}
+                change={this.handleChange}
+              />
+            </Group>
+          </AnimateHeight>
+        </Group>
       </Container>
     );
   }
   handleChange = (name, value) => {
     this.setState({ [name]: value }, () => {
-      this.props.change({ type: this.state.type, insert: this.state.insert });
+      this.props.change({
+        type: this.state.type,
+        insert: this.state.insert,
+        relative: this.state.relative
+      });
     });
   };
 }

@@ -7,7 +7,8 @@ import DataList from './DataList';
 import PriorityTable from './PriorityTable';
 import Indicators from './Indicators';
 import RadioGroup from './RadioGroup';
-
+import AltCrDataTable from './AltCrDataTable';
+import GPRTable from './GPRTable';
 export {
   RadioGroup,
   Button,
@@ -17,5 +18,7 @@ export {
   AsideMenu,
   DataList,
   PriorityTable,
-  Indicators
+  Indicators,
+  AltCrDataTable,
+  GPRTable
 };
