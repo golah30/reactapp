@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Vega from '../../../Vega';
 import { buildVegaSpec } from './Spec';
+import { connect } from 'react-redux';
 
 class ModalGraph extends React.Component {
   handleClick = e => {
@@ -10,10 +11,16 @@ class ModalGraph extends React.Component {
     }
   };
   render() {
+    const { purpose, criterias, alternatives, LPRs } = this.props;
     return (
       <Container id="modalgraphcontainer" onClick={this.handleClick}>
         <TreeContainer>
-          <Vega spec={buildVegaSpec()} />
+          <Vega
+            spec={buildVegaSpec(
+              {},
+              { target: purpose.target, criterias, alternatives, LPRs }
+            )}
+          />
         </TreeContainer>
       </Container>
     );
@@ -40,4 +47,16 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
-export default ModalGraph;
+
+const mapStateToProps = state => ({
+  purpose: state.AHP.purpose,
+  criterias: state.AHP.criterias,
+  alternatives: state.AHP.alternatives,
+  LPRs: state.AHP.LPRs.data
+});
+const mapDispatchToProps = {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ModalGraph);

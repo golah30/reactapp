@@ -64,9 +64,6 @@ class AHPbody extends Component {
             <ModalTreeGraph close={this.closeModal} />
           </Modal>
         ) : null}
-        {/* <Modal>
-          <ModalTreeGraph close={this.closeModal} />
-        </Modal> */}
         <Footer />
       </Fragment>
     );

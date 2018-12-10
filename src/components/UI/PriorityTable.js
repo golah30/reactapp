@@ -24,7 +24,7 @@ class PriorityTable extends React.Component {
     if (
       values !== null &&
       values.length !== 0 &&
-      (values.length === comparedItems.length ||
+      ((values.length === comparedItems.length && radio.type !== 'relative') ||
         (values.length - 1 === comparedItems.length &&
           radio.type === 'relative'))
     ) {
