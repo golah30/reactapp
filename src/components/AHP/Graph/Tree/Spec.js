@@ -1,8 +1,13 @@
 import _ from 'lodash';
 export const buildVegaSpec = (size, data) => {
+  let siz =
+    data.criterias.length > data.alternatives.length
+      ? data.criterias.length
+      : data.alternatives.length;
+  siz = siz * 100 + 100;
   const Nodes = createNodesSpec(
-    400,
-    400,
+    siz,
+    600,
     data.target,
     data.criterias,
     data.alternatives
@@ -24,19 +29,19 @@ export const buildVegaSpec = (size, data) => {
     lprsdata
   );
 
-  return spec(400, 400, Nodes, Edges);
+  return spec(siz, 600, Nodes, Edges);
 };
 const createFakeLPRs = data => {
   let lprsdata = [];
   let crAr = [];
   for (let i = 0; i < data.criterias.length; ++i) {
-    crAr.push({ lpr: 0 });
+    crAr.push({ lpr: '' });
   }
   lprsdata.push(crAr);
   for (let i = 0; i < data.criterias.length; ++i) {
     let alAr = [];
     for (let j = 0; j < data.alternatives.length; ++j) {
-      alAr.push({ lpr: 0 });
+      alAr.push({ lpr: '' });
     }
     lprsdata.push(alAr);
   }
@@ -68,7 +73,7 @@ const createNodesSpec = (
     0.2,
     0.4,
     values.length + 1,
-    10,
+    -10,
     -15
   );
   // calculate and add alternatives
