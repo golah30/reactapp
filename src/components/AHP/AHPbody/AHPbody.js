@@ -13,10 +13,12 @@ import Modal from '../../Modal';
 import ModalTreeGraph from '../Graph/Tree/ModalTreeGraph';
 import styled from 'styled-components';
 import _ from 'lodash';
+import alternatives from '../../../ducks/AHP/reducers/alternatives';
 
 class AHPbody extends Component {
   state = {
-    showModal: false
+    showModal: false,
+    isModalGraphAvailable: false
   };
   componentDidMount() {
     this.props.history.push('/ahp/begin');
@@ -31,6 +33,8 @@ class AHPbody extends Component {
       !_.isEqual(criterias, prevProps.criterias)
     ) {
       this.updateMenu(2);
+      if (!_.isEqual(criterias, {}) && !_.isEqual(alternatives, {}))
+        this.setState({ isModalGraphAvailable: true });
     }
     if (!_.isEqual(LPRs, prevProps.LPRs)) {
       this.updateMenu(3);
@@ -47,6 +51,7 @@ class AHPbody extends Component {
           controll
           controllTitle="Структура задачи"
           click={this.openModal}
+          disabled={!this.state.isModalGraphAvailable}
         />
         <Container>
           <AsideMenu data={menu} />

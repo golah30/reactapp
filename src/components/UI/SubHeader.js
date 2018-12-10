@@ -8,9 +8,12 @@ class SubHeader extends React.PureComponent {
         <PageTitle>
           {this.props.title ? this.props.title : 'Решение задачи'}
         </PageTitle>
-        {this.props.controll && (
-          <Button onClick={this.props.click}>{this.props.controllTitle}</Button>
-        )}
+        {this.props.controll &&
+          !this.props.disabled && (
+            <Button onClick={this.props.click} disabled={this.props.disabled}>
+              {this.props.controllTitle}
+            </Button>
+          )}
       </Container>
     );
   }
