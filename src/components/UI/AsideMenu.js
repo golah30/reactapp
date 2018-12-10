@@ -19,12 +19,12 @@ export default class AsideMenu extends React.Component {
       ) : (
         <Link
           key={key}
-          to={item.route}
-          activeStyle={Active}
           isAvailable={item.isAvailable}
           isSubItem={item.isSubItem}
         >
-          {item.title}
+          <NavLink to={item.route} activeStyle={Active}>
+            {item.title}
+          </NavLink>
         </Link>
       );
     } else {
@@ -58,25 +58,27 @@ const Li = styled.li`
   border-left: 5px solid transparent;
   cursor: 'default';
 `;
-const Link = styled(NavLink)`
-  display: block;
-  box-sizing: border-box;
-  text-decoration: none;
-  padding-top: 10px;
-  padding-bottom: 13px;
-  padding-left: 25px;
-  margin-left: ${props => (props.isSubItem ? '25px' : '0')};
-  font-size: 20px;
-  font-weight: 400;
-  border-left: 5px solid transparent;
-  transition: color 0.5s, border 0.5s;
-  color: #111111;
-  pointer-events: ${props => (props.isAvailable ? 'auto' : 'none')};
-  border-color: ${props => (props.isAvailable ? '#62A3FF' : 'transparent')};
-  cursor: ${props => (props.isAvailable ? 'pointer' : 'default')};
-  &:hover {
-    border-color: ${props => (props.isAvailable ? '#004A9F' : 'transparent')};
-    color: ${props => (props.isAvailable ? '#004A9F' : '#111111')};
+const Link = styled.div`
+  & a {
+    display: block;
+    box-sizing: border-box;
+    text-decoration: none;
+    padding-top: 10px;
+    padding-bottom: 13px;
+    padding-left: 25px;
+    margin-left: ${props => (props.isSubItem ? '25px' : '0')};
+    font-size: 20px;
+    font-weight: 400;
+    border-left: 5px solid transparent;
+    transition: color 0.5s, border 0.5s;
+    color: #111111;
+    pointer-events: ${props => (props.isAvailable ? 'auto' : 'none')};
+    border-color: ${props => (props.isAvailable ? '#62A3FF' : 'transparent')};
+    cursor: ${props => (props.isAvailable ? 'pointer' : 'default')};
+    &:hover {
+      border-color: ${props => (props.isAvailable ? '#004A9F' : 'transparent')};
+      color: ${props => (props.isAvailable ? '#004A9F' : '#111111')};
+    }
   }
 `;
 const Active = {

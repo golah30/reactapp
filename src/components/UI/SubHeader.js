@@ -8,6 +8,9 @@ class SubHeader extends React.PureComponent {
         <PageTitle>
           {this.props.title ? this.props.title : 'Решение задачи'}
         </PageTitle>
+        {this.props.controll && (
+          <Button onClick={this.props.click}>{this.props.controllTitle}</Button>
+        )}
       </Container>
     );
   }
@@ -15,6 +18,7 @@ class SubHeader extends React.PureComponent {
 
 const Container = styled.div`
   padding: 0 100px;
+  align-items: center;
   background-color: #1675d1;
   justify-content: space-between;
   display: flex;
@@ -27,6 +31,23 @@ const PageTitle = styled.h2`
   font-size: 38px;
   font-family: 'Playfair Display', sans-serif;
   font-weight: 400;
+`;
+const Button = styled.button`
+  border-radius: 3px;
+  border: none;
+  color: #fafafa;
+  font-size: 20px;
+  background: #62a3ff;
+  padding: 12px 20px;
+  width: 250px;
+  height: 50px;
+  transition: background-color 0.5s;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  &:hover {
+    background: transparent;
+  }
 `;
 
 export default SubHeader;

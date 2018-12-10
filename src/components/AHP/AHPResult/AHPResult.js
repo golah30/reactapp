@@ -12,6 +12,8 @@ class AHPResult extends React.PureComponent {
   componentDidMount = async () => {
     const { alternatives, criterias, LPRs } = this.props;
     const result = await getAHPResult({ alternatives, criterias, LPRs });
+    console.log(result);
+
     this.setState({ loaded: true, result: result });
   };
 

@@ -100,11 +100,6 @@ class AHPInput extends React.PureComponent {
         </TextInputContainer>
         <ButtonContainer>
           <Button
-            title="Построить граф"
-            disabled={true}
-            click={this.buildGraph}
-          />
-          <Button
             title="Далее"
             disabled={!this.state.isValid}
             click={this.handleSubmit}
@@ -140,7 +135,6 @@ class AHPInput extends React.PureComponent {
     }
     return true;
   };
-  buildGraph = () => {};
 }
 
 const DataLists = styled.div`

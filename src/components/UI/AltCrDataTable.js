@@ -48,24 +48,3 @@ const Cell = styled.td`
   color: #111111;
   background-color: ${props => (props.white ? 'transparent' : '#62a3ff')};
 `;
-
-const CellContainer = styled.td`
-  border: 1px solid #348ce8;
-  text-align: center;
-  background-color: ${props => (props.gray ? '#d3d3d3' : 'transparent')};
-  & input {
-    background-color: ${props => (props.gray ? '#d3d3d3' : 'transparent')};
-  }
-`;
-
-const CellInput = styled.input`
-  box-sizing: border-box;
-  border: none;
-  width: 60px;
-  padding: 5px;
-  color: #111111;
-  text-align: center;
-  &:focus {
-    outline: none;
-  }
-`;

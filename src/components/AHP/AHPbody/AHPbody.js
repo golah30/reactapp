@@ -9,10 +9,15 @@ import AHPBegin from '../AHPBegin';
 import AHPInput from '../AHPInput';
 import AHPCompare from '../AHPCompare';
 import AHPResult from '../AHPResult';
+import Modal from '../../Modal';
+import ModalTreeGraph from '../Graph/Tree/ModalTreeGraph';
 import styled from 'styled-components';
 import _ from 'lodash';
 
 class AHPbody extends Component {
+  state = {
+    showModal: false
+  };
   componentDidMount() {
     this.props.history.push('/ahp/begin');
   }
@@ -37,7 +42,12 @@ class AHPbody extends Component {
     return (
       <Fragment>
         <Header />
-        <SubHeader title={'Метод анализа иерархий'} />
+        <SubHeader
+          title={'Метод анализа иерархий'}
+          controll
+          controllTitle="Структура задачи"
+          click={this.openModal}
+        />
         <Container>
           <AsideMenu data={menu} />
           <Content>
@@ -49,10 +59,24 @@ class AHPbody extends Component {
             </Switch>
           </Content>
         </Container>
+        {this.state.showModal ? (
+          <Modal>
+            <ModalTreeGraph close={this.closeModal} />
+          </Modal>
+        ) : null}
+        {/* <Modal>
+          <ModalTreeGraph close={this.closeModal} />
+        </Modal> */}
         <Footer />
       </Fragment>
     );
   }
+  openModal = () => {
+    this.setState({ showModal: true });
+  };
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
   updateMenu = stage => {
     let menu = _.cloneDeep(this.props.menu);
     const { target, purpose, criterias, LPRs } = this.props;
