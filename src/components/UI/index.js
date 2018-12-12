@@ -4,11 +4,12 @@ import CheckBox from './CheckBox';
 import SubHeader from './SubHeader';
 import AsideMenu from './AsideMenu';
 import DataList from './DataList';
-import PriorityTable from './PriorityTable';
 import Indicators from './Indicators';
 import RadioGroup from './RadioGroup';
 import AltCrDataTable from './AltCrDataTable';
 import GPRTable from './GPRTable';
+import LPRTable from './PriorityTable';
+
 export {
   RadioGroup,
   Button,
@@ -17,7 +18,7 @@ export {
   SubHeader,
   AsideMenu,
   DataList,
-  PriorityTable,
+  LPRTable,
   Indicators,
   AltCrDataTable,
   GPRTable

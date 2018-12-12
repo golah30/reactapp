@@ -2,13 +2,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import {
-  PriorityTable,
-  Indicators,
-  Button,
-  RadioGroup,
-  TextInput
-} from '../../UI';
+import { LPRTable, Indicators, Button, RadioGroup, TextInput } from '../../UI';
 import { setAhpTarget, ahpLprRequest, ahpLprSuccess } from '../../../ducks/AHP';
 
 class AHPCompare extends React.Component {
@@ -66,7 +60,7 @@ class AHPCompare extends React.Component {
             change={this.handleRadioChange}
           />
         </RadioGroupContainer>
-        <PriorityTable
+        <LPRTable
           values={
             LPRs[pageId] && LPRs[pageId].table ? LPRs[pageId].table : null
           }

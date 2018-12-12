@@ -10,7 +10,9 @@ const editData = (currentLPRs, response, payload) => {
   const resData = response.data;
   let LPRs = _.cloneDeep(currentLPRs);
   const lpr = resData.localPriorities;
-  const indicators = [resData.dim, resData.lam, resData.ci, resData.cr];
+  const indicators = resData.indexes;
+  const Korogodin = resData.valuesKorogodin;
+  const Bongard = resData.valuesBongard;
 
   if (
     !_.isEqual(LPRs[id].table, table) ||
@@ -20,6 +22,8 @@ const editData = (currentLPRs, response, payload) => {
       table,
       lpr,
       indicators,
+      Korogodin,
+      Bongard,
       radio,
       comment
     };

@@ -2,10 +2,13 @@ import axios from 'axios';
 import { buildQueryFromLPRMatrix, buildAHPResultQuery } from './helpers';
 
 const basePath = 'http://localhost:3000/api';
+// const basePath2 = 'http://golah30.ru:3000/api';
 const LOG_IN = `${basePath}/login`;
 const CATEGORIES = `${basePath}/categories`;
 const POSTS = `${basePath}/posts`;
+//const MATH = 'http://golah30.ru:8080';
 const MATH = 'http://localhost:8080';
+// const MATH2 = 'http://nootron.nmetau.edu.ua:8080/nootron.server';
 
 export const getLocalPriorities = payload => {
   return axios(buildQueryFromLPRMatrix(MATH, payload));

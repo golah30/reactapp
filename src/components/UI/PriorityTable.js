@@ -123,8 +123,8 @@ class PriorityTable extends React.Component {
                 </Fragment>
               ))}
               <TitleCell white>
-                {localPriorities && localPriorities[rowId].lpr
-                  ? localPriorities[rowId].lpr
+                {localPriorities && localPriorities[rowId]
+                  ? localPriorities[rowId]
                   : '-'}
               </TitleCell>
             </Row>
@@ -165,8 +165,8 @@ class PriorityTable extends React.Component {
                 </Fragment>
               ))}
               <TitleCell white>
-                {localPriorities && localPriorities[rowId].lpr
-                  ? localPriorities[rowId].lpr
+                {localPriorities && localPriorities[rowId]
+                  ? localPriorities[rowId]
                   : '-'}
               </TitleCell>
             </Row>
@@ -195,8 +195,8 @@ class PriorityTable extends React.Component {
                 </Fragment>
               ))}
               <TitleCell white>
-                {localPriorities && localPriorities[rowId].lpr
-                  ? localPriorities[rowId].lpr
+                {localPriorities && localPriorities[rowId]
+                  ? localPriorities[rowId]
                   : '-'}
               </TitleCell>
             </Row>
