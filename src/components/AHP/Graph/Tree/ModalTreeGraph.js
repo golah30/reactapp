@@ -30,6 +30,7 @@ class ModalGraph extends React.Component {
 const TreeContainer = styled.div`
   width: 80%;
   height: 80%;
+  overflow: auto;
   background-color: white;
   display: flex;
   align-items: center;

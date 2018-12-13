@@ -17,7 +17,12 @@ export const buildVegaSpec = (size, data) => {
   if (!_.isEqual(data.LPRs, [])) {
     for (let i = 0; i < data.LPRs.length; ++i) {
       if (!_.isEqual(data.LPRs[i], {})) {
-        lprsdata[i] = data.LPRs[i].lpr;
+        let lprsWeights = calcWeights(data.LPRs[i].lpr);
+        let lprs = [];
+        for (let j = 0; j < data.LPRs[i].lpr.length; ++j) {
+          lprs.push({ lpr: data.LPRs[i].lpr[j], weight: lprsWeights[j] });
+        }
+        lprsdata[i] = lprs;
       }
     }
   }
@@ -31,17 +36,28 @@ export const buildVegaSpec = (size, data) => {
 
   return spec(siz, 600, Nodes, Edges);
 };
+const calcWeights = lprs => {
+  let max = parseFloat(lprs[0]);
+  for (let i = 0; i < lprs.length; ++i) {
+    if (max < parseFloat(lprs[i])) max = parseFloat(lprs[i]);
+  }
+  let weights = [];
+  for (let i = 0; i < lprs.length; ++i) {
+    weights.push((parseFloat(lprs[i]) / max) * 100);
+  }
+  return weights;
+};
 const createFakeLPRs = data => {
   let lprsdata = [];
   let crAr = [];
   for (let i = 0; i < data.criterias.length; ++i) {
-    crAr.push({ lpr: '' });
+    crAr.push({ lpr: '', weight: 0 });
   }
   lprsdata.push(crAr);
   for (let i = 0; i < data.criterias.length; ++i) {
     let alAr = [];
     for (let j = 0; j < data.alternatives.length; ++j) {
-      alAr.push({ lpr: '' });
+      alAr.push({ lpr: '', weight: 0 });
     }
     lprsdata.push(alAr);
   }
@@ -60,8 +76,7 @@ const createNodesSpec = (
     id: 1,
     name: target,
     x: canvasWidth * 0.5,
-    y: canvasHeight * 0.1,
-    xOffset: -30,
+    y: canvasHeight * 0.2,
     yOffset: -20
   });
   // calculate and add criterias
@@ -71,9 +86,8 @@ const createNodesSpec = (
     canvasWidth,
     canvasHeight,
     0.2,
-    0.4,
+    0.5,
     values.length + 1,
-    -10,
     -15
   );
   // calculate and add alternatives
@@ -82,16 +96,39 @@ const createNodesSpec = (
     alternatives,
     canvasWidth,
     canvasHeight,
-    0.1,
-    0.8,
+    0.15,
+    0.85,
     values.length + 1,
-    -40,
     20
   );
 
   return values;
 };
 
+const getColorByLPRWeight = value => {
+  const colors = [
+    '#55FF00',
+    '#7FFF00',
+    '#AAFF00',
+    '#D4FF00',
+    '#FFFF00',
+    '#FFD400',
+    '#FFAA00',
+    '#FF7F00',
+    '#FF5500',
+    '#FF2A00'
+  ];
+  if (value < 10) return colors[0];
+  if (value < 20) return colors[1];
+  if (value < 30) return colors[2];
+  if (value < 40) return colors[3];
+  if (value < 50) return colors[4];
+  if (value < 60) return colors[5];
+  if (value < 70) return colors[6];
+  if (value < 80) return colors[7];
+  if (value < 90) return colors[8];
+  if (value <= 100) return colors[9];
+};
 const calcDotsPositions = (
   values,
   data,
@@ -100,7 +137,6 @@ const calcDotsPositions = (
   xAxisOffset,
   yAxisOffset,
   initialId,
-  xOffset,
   yOffset
 ) => {
   const dotCount = data.length;
@@ -113,7 +149,6 @@ const calcDotsPositions = (
     name: data[0],
     x: Math.round(dotXPosition),
     y: dotYPosition,
-    xOffset,
     yOffset
   });
   for (let i = 1; i < dotCount; ++i) {
@@ -123,7 +158,6 @@ const calcDotsPositions = (
       name: data[i],
       x: Math.round(dotXPosition),
       y: dotYPosition,
-      xOffset,
       yOffset
     });
   }
@@ -135,8 +169,7 @@ const createEdgesSpec = (Nodes, criterias, alternatives, LPRs) => {
   // add edges from purpose to criterias
   let SourceIndex = 0;
   for (let i = 0; i < criterias.length; ++i) {
-    let x = (Nodes[SourceIndex].x + Nodes[i + 1].x) / 2;
-    let y = (Nodes[SourceIndex].y + Nodes[i + 1].y) / 2;
+    let { x, y } = calcTextCoordsByKoef(Nodes[SourceIndex], Nodes[i + 1], 0.35);
     let xOffset = 0;
     let yOffset = 0;
     edges.push({
@@ -144,32 +177,77 @@ const createEdgesSpec = (Nodes, criterias, alternatives, LPRs) => {
       t: Nodes[i + 1].id,
       x,
       y,
+      x1: x,
+      y1: y,
       xOffset,
       yOffset,
+      color: getColorByLPRWeight(LPRs[0][i].weight),
       name: LPRs[0][i].lpr
     });
   }
   // add edges from criterias to alternatives
-  const FirstAlternativeIndex = criterias.length + 1;
+  const FirstAltIndex = criterias.length + 1;
   for (let i = 0; i < criterias.length; ++i) {
     SourceIndex = 1 + i;
     for (let j = 0; j < alternatives.length; ++j) {
-      let x = (Nodes[SourceIndex].x + Nodes[j + FirstAlternativeIndex].x) / 2;
-      let y = (Nodes[SourceIndex].y + Nodes[j + FirstAlternativeIndex].y) / 2;
+      let C = calcTextCoordsByKoef(
+        Nodes[SourceIndex],
+        Nodes[j + FirstAltIndex],
+        0.2
+      );
+      let C1 = calcTextCoordsByKoef(
+        Nodes[SourceIndex],
+        Nodes[j + FirstAltIndex],
+        0.8
+      );
       let xOffset = 10;
       let yOffset = 0;
       edges.push({
         s: Nodes[SourceIndex].id,
-        t: Nodes[j + FirstAlternativeIndex].id,
-        x,
-        y,
+        t: Nodes[j + FirstAltIndex].id,
+        x: C.x,
+        y: C.y,
+        x1: C1.x,
+        y1: C1.y,
         xOffset,
         yOffset,
+        color: getColorByLPRWeight(LPRs[i + 1][j].weight),
         name: LPRs[i + 1][j].lpr
       });
     }
   }
   return edges;
+};
+const calcTextCoordsByKoef = (A, B, k) => {
+  let x, y;
+  // imitate the  Bézier Curve
+  // P = (1−t)3P1 + 3(1−t)2tP2 +3(1−t)t2P3 + t3P4
+  let P1, P2, P3, P4, t;
+  const centerPointY = (A.y + B.y) / 2;
+  if (A.x >= B.x) {
+    P1 = { x: B.x, y: B.y };
+    P2 = { x: B.x, y: centerPointY };
+    P3 = { x: A.x, y: centerPointY };
+    P4 = { x: A.x, y: A.y };
+    t = k;
+  } else {
+    P1 = { x: A.x, y: A.y };
+    P2 = { x: A.x, y: centerPointY };
+    P3 = { x: B.x, y: centerPointY };
+    P4 = { x: B.x, y: B.y };
+    t = 1 - k;
+  }
+  x =
+    Math.pow(1 - t, 3) * P1.x +
+    3 * Math.pow(1 - t, 2) * t * P2.x +
+    3 * (1 - t) * Math.pow(t, 2) * P3.x +
+    Math.pow(t, 3) * P4.x;
+  y =
+    Math.pow(1 - t, 3) * P1.y +
+    3 * Math.pow(1 - t, 2) * t * P2.y +
+    3 * (1 - t) * Math.pow(t, 2) * P3.y +
+    Math.pow(t, 3) * P4.y;
+  return { x, y };
 };
 const spec = (w, h, Nodes, Edges) => {
   return {
@@ -178,6 +256,11 @@ const spec = (w, h, Nodes, Edges) => {
     height: h,
     autosize: 'none',
     signals: [
+      {
+        name: 'showall',
+        value: false,
+        bind: { input: 'checkbox', name: 'Отобразить все данные' }
+      },
       {
         name: 'active',
         value: null,
@@ -245,7 +328,7 @@ const spec = (w, h, Nodes, Edges) => {
         encode: {
           enter: {
             stroke: { value: '#ccc' },
-            strokeWidth: { value: 2 },
+            strokeWidth: { value: 3 },
             x: { value: 0 },
             y: { value: 0 },
             tooltip: { field: 'name' }
@@ -253,12 +336,13 @@ const spec = (w, h, Nodes, Edges) => {
           update: {
             path: { field: 'path' },
             stroke: [
-              { test: 'datum.s === active', value: 'steelblue' },
-              { test: 'datum.t === active', value: 'green' },
+              { test: 'datum.s === active', field: 'color' },
+              { test: 'datum.t === active', field: 'color' },
               {
                 test: 'datum.t === activepath.t && datum.s === activepath.s',
-                value: 'steelblue'
+                field: 'color'
               },
+              { test: 'showall === true', field: 'color' },
               { value: '#ccc' }
             ],
             opacity: [
@@ -268,7 +352,7 @@ const spec = (w, h, Nodes, Edges) => {
                 test: 'datum.t === activepath.t && datum.s === activepath.s',
                 value: 1
               },
-              { value: 0.6 }
+              { value: 0.7 }
             ],
             strokeWidth: [
               { test: 'datum.s === active', value: 3 },
@@ -277,7 +361,7 @@ const spec = (w, h, Nodes, Edges) => {
                 test: 'datum.t === activepath.t && datum.s === activepath.s',
                 value: 3
               },
-              { value: 2 }
+              { value: 3 }
             ]
           }
         }
@@ -310,12 +394,14 @@ const spec = (w, h, Nodes, Edges) => {
         encode: {
           enter: {
             text: { field: 'name' },
-            fontSize: { value: 14 },
+            fontSize: { value: 16 },
             fill: { value: 'black' },
             baseline: { value: 'middle' },
-            x: { field: 'x', offset: { field: 'xOffset' } },
+            x: { field: 'x', offset: 0 },
             y: { field: 'y', offset: { field: 'yOffset' } },
-            tooltip: { field: 'name' }
+            tooltip: { field: 'name' },
+            align: { value: 'center' },
+            limit: { value: 100 }
           },
           update: {
             fill: [
@@ -331,22 +417,16 @@ const spec = (w, h, Nodes, Edges) => {
         encode: {
           enter: {
             text: { field: 'name' },
-            fontSize: { value: 14 },
+            fontSize: { value: 16 },
             fill: { value: 'black' },
+            align: { value: 'center' },
             baseline: { value: 'middle' },
-            x: { field: 'x', offset: { field: 'xOffset' } },
-            y: { field: 'y', offset: { field: 'yOffset' } }
+            x: { field: 'x', offset: 0 },
+            y: { field: 'y', offset: 0 }
           },
           update: {
-            fill: [
-              { test: 'datum.t === active', value: 'green' },
-              { test: 'datum.s === active', value: 'steelblue' },
-              {
-                test: 'datum.t === activepath.t && datum.s === activepath.s',
-                value: 'steelblue'
-              },
-              { value: 'black' }
-            ],
+            x: [{ test: 'datum.s === active', field: 'x' }, { field: 'x1' }],
+            y: [{ test: 'datum.s === active', field: 'y' }, { field: 'y1' }],
             opacity: [
               { test: 'datum.s === 1', value: 1 },
               { test: 'datum.t === active || datum.s === active', value: 1 },
@@ -354,6 +434,7 @@ const spec = (w, h, Nodes, Edges) => {
                 test: 'datum.t === activepath.t && datum.s === activepath.s',
                 value: 1
               },
+              { test: 'showall === true', value: 1 },
               { value: 0 }
             ],
             zindex: [
@@ -375,6 +456,20 @@ const spec = (w, h, Nodes, Edges) => {
               },
               { value: 'normal' }
             ]
+          }
+        }
+      },
+      {
+        type: 'text',
+        encode: {
+          enter: {
+            text: { value: 'Иерархическая структура задачи' },
+            fontSize: { value: 16 },
+            fill: { value: 'black' },
+            baseline: { value: 'middle' },
+            align: { value: 'center' },
+            x: { value: w / 2, offset: 0 },
+            y: { value: h * 0.05, offset: 0 }
           }
         }
       }
