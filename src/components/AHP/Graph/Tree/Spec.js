@@ -434,7 +434,6 @@ const spec = (w, h, Nodes, Edges) => {
                 test: 'datum.t === activepath.t && datum.s === activepath.s',
                 value: 1
               },
-              { test: 'showall === true', value: 1 },
               { value: 0 }
             ],
             zindex: [

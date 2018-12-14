@@ -18,11 +18,11 @@ export default class AltCrDataTable extends React.PureComponent {
             return (
               <Row key={CrId}>
                 <Cell white>{cr}</Cell>
-                <Cell white>{LPRs[0].lpr[CrId].lpr}</Cell>
+                <Cell white>{LPRs[0].lpr[CrId]}</Cell>
                 {alt.map((_alt, altId) => {
                   return (
                     <Cell key={CrId + altId} white>
-                      {LPRs[CrId + 1].lpr[altId].lpr}
+                      {LPRs[CrId + 1].lpr[altId]}
                     </Cell>
                   );
                 })}

@@ -41,8 +41,11 @@ export default class ManualTypeTable extends PureComponent {
         }
         cells.push(items);
       }
-      if (mode === 'auto') {
+      if (mode === 'rand') {
         cells = this.setRndValues(cells);
+      }
+      if (mode === 'auto') {
+        cells = this.setAutoValues(cells);
       }
       this.setState({ cells: cells }, () => {
         this.props.change(this.state.cells);
@@ -98,6 +101,21 @@ export default class ManualTypeTable extends PureComponent {
       </Fragment>
     );
   }
+  setAutoValues = cells => {
+    const length = this.props.comparedItems.length;
+    for (let i = 0; i < length; ++i) {
+      let k = 1;
+      for (let j = 0; j < length; ++j) {
+        if (j > i) {
+          k += 1;
+          cells[i][j] = { value: `${k}`, valid: true };
+        } else if (j < i) {
+          cells[i][j] = this.revertData(cells[j][i]);
+        }
+      }
+    }
+    return cells;
+  };
   setRndValues = cells => {
     const length = this.props.comparedItems.length;
     for (let i = 0; i < length; ++i) {

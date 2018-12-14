@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { LPRTable, Indicators, Button, RadioGroup, TextInput } from '../../UI';
 import { setAhpTarget, ahpLprRequest, ahpLprSuccess } from '../../../ducks/AHP';
+import Modal from '../../Modal';
+import ModalLineGraph from '../Graph/Line/ModalLineGraph';
 
 class AHPCompare extends React.Component {
   state = {
     table: [],
     isTableValid: false,
     radio: {},
-    comment: ''
+    comment: '',
+    showModal: false
   };
   componentDidMount() {
     const { LPRs, criterias } = this.props;
@@ -95,15 +98,37 @@ class AHPCompare extends React.Component {
             disabled={!this.state.isTableValid}
             click={this.calcLPRs}
           />
+          {pageId !== 0 ? (
+            <Button
+              title={'Количество информации'}
+              disabled={!(LPRs[pageId] && !_.isEqual(LPRs[pageId], {}))}
+              click={this.openModal}
+            />
+          ) : null}
           <Button
             title="Далее"
             disabled={!(LPRs[pageId] && !_.isEqual(LPRs[pageId], {}))}
             click={this.handleSubmit}
           />
         </ButtonContainer>
+        {this.state.showModal ? (
+          <Modal>
+            <ModalLineGraph
+              alternatives={alternatives}
+              LPRs={LPRs[pageId]}
+              close={this.closeModal}
+            />
+          </Modal>
+        ) : null}
       </Fragment>
     );
   }
+  openModal = () => {
+    this.setState({ showModal: true });
+  };
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
   handleSubmit = () => {
     const { LPRs } = this.props;
     const id = parseInt(this.props.match.params.id, 10);
@@ -168,7 +193,7 @@ const RadioGroupContainer = styled.div`
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  max-width: 475px;
+  max-width: 600px;
   justify-content: space-between;
   margin-bottom: 200px;
 `;

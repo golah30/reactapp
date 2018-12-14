@@ -17,11 +17,11 @@ export const buildAHPResultQuery = (head, data) => {
 
   q = `${q}/AHP_Result.htm?cr=${criterias.length}&alt=${alternatives.length}`;
   for (let i = 0; i < criterias.length; ++i) {
-    q = `${q}&celLpr-0-${i + 1}=${LPRs[0].lpr[i].lpr}`;
+    q = `${q}&celLpr-0-${i + 1}=${LPRs[0].lpr[i]}`;
   }
   for (let i = 1; i < LPRs.length; ++i) {
     for (let j = 0; j < alternatives.length; ++j) {
-      q = `${q}&celLpr-${i}-${j + 1}=${LPRs[i].lpr[j].lpr}`;
+      q = `${q}&celLpr-${i}-${j + 1}=${LPRs[i].lpr[j]}`;
     }
   }
 

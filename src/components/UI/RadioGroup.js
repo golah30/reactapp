@@ -73,6 +73,14 @@ class RadioGroup extends React.PureComponent {
                 label={'Автоматически'}
                 change={this.handleChange}
               />
+              <Radio
+                sub={true}
+                name="insert"
+                value="rand"
+                checked={this.state.insert === 'rand'}
+                label={'Случайно'}
+                change={this.handleChange}
+              />
             </Group>
           </AnimateHeight>
         </Group>

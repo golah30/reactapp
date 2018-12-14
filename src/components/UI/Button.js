@@ -20,9 +20,9 @@ export default class Button extends React.PureComponent {
 // simple usage
 const StyledButton = styled.button`
   box-sizing: border-box;
-  width: 175px;
+  min-width: 175px;
   margin-bottom: 30px;
-  padding: 11px 0px;
+  padding: 11px 5px;
   transition: background-color 0.5s;
   text-align: center;
   text-transform: uppercase;

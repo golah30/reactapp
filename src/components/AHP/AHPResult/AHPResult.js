@@ -1,24 +1,43 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { AltCrDataTable, GPRTable } from '../../UI';
+import Diagram from '../Graph/Diagram/Diagram';
+import Radial from '../Graph/Radial/Radial';
 import styled from 'styled-components';
 import { getAHPResult } from '../../../api';
+import _ from 'lodash';
+import { Button } from '../../UI';
+import Modal from '../../Modal';
+import ModalLineGraph from '../Graph/Line/ModalLineGraph';
 
 class AHPResult extends React.PureComponent {
   state = {
     loaded: false,
-    result: {}
+    result: {},
+    hovered: {},
+    showModal: false
   };
   componentDidMount = async () => {
     const { alternatives, criterias, LPRs } = this.props;
     const result = await getAHPResult({ alternatives, criterias, LPRs });
-    console.log(result);
 
     this.setState({ loaded: true, result: result });
   };
 
   render() {
     const { target, purpose, alternatives, criterias, LPRs } = this.props;
+    if (_.isEqual(this.state.result, {})) {
+      return null;
+    }
+    if (this.state.result.status !== 200) {
+      return <div>error</div>;
+    }
+    const data = this.state.result.data;
+    let set = [];
+    for (let i = 0; i < alternatives.length; ++i) {
+      set.push(i);
+    }
+
     return (
       <Fragment>
         <TextContainer>
@@ -37,14 +56,118 @@ class AHPResult extends React.PureComponent {
         </TableContainer>
 
         <TableContainer>
-          <TableLabel>Локальные приоритеты критериев и альтернатив</TableLabel>
-          <GPRTable alt={alternatives} GPR={criterias} />
+          <TableLabel>Глобальные приоритеты Альтернатив</TableLabel>
+          <GPRTable
+            active={this.state.hovered}
+            alt={alternatives}
+            output={data.output}
+            outputRel={data.outputRel}
+          />
         </TableContainer>
+        <Button
+          title={'Количество информации'}
+          disabled={false}
+          click={this.openModal}
+        />
+        <DiagramContainer>
+          <TableLabel>Диаграмма глобальных приоритетов альтернатив</TableLabel>
+          <Diagram
+            hover={this.handleDiagramHover}
+            alt={alternatives}
+            output={data.output}
+            outputRel={data.outputRel}
+          />
+        </DiagramContainer>
+        <RadialDiagramContainer>
+          <RadialDiagramLabel>
+            <RadialLabel>Исходное множество альтернатив</RadialLabel>
+            <Radial
+              alternatives={alternatives}
+              criterias={criterias}
+              LPRs={LPRs}
+              set={set}
+            />
+          </RadialDiagramLabel>
+          <RadialDiagramLabel>
+            <RadialLabel>
+              Множество оптимальных по Бартини альтернатив
+            </RadialLabel>
+            <Radial
+              alternatives={alternatives}
+              criterias={criterias}
+              LPRs={LPRs}
+              set={data.altSet}
+            />
+          </RadialDiagramLabel>
+          <RadialDiagramLabel>
+            <RadialLabel>
+              Множество оптимальных по Слейтеру альтернатив
+            </RadialLabel>
+            <Radial
+              alternatives={alternatives}
+              criterias={criterias}
+              LPRs={LPRs}
+              set={data.altSlayterSet}
+            />
+          </RadialDiagramLabel>
+          <RadialDiagramLabel>
+            <RadialLabel>
+              Множество оптимальных по Парето альтернатив
+            </RadialLabel>
+            <Radial
+              alternatives={alternatives}
+              criterias={criterias}
+              LPRs={LPRs}
+              set={data.altParetoSet}
+            />
+          </RadialDiagramLabel>
+        </RadialDiagramContainer>
+        <BottomContainer />
+        {this.state.showModal ? (
+          <Modal>
+            <ModalLineGraph
+              alternatives={alternatives}
+              LPRs={{
+                lpr: data.output,
+                Korogodin: data.valuesKorogodin,
+                Bongard: data.valuesBongard
+              }}
+              close={this.closeModal}
+            />
+          </Modal>
+        ) : null}
       </Fragment>
     );
   }
+  handleDiagramHover = (_name, value) => {
+    this.setState({ hovered: value });
+  };
+  openModal = () => {
+    this.setState({ showModal: true });
+  };
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
 }
-
+const RadialLabel = styled.div`
+  display: inline-block;
+  & + div {
+    width: 350px;
+    height: 350px;
+  }
+`;
+const RadialDiagramLabel = styled.div`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+const RadialDiagramContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+const DiagramContainer = styled.div`margin-bottom`;
 const TextContainer = styled.div`
   margin-bottom: 30px;
 `;
@@ -58,7 +181,12 @@ const TableLabel = styled.div`
 const TableContainer = styled.div`
   margin-bottom: 30px;
 `;
-
+const BottomContainer = styled.div`
+  display: flex;
+  max-width: 475px;
+  justify-content: space-between;
+  margin-bottom: 200px;
+`;
 const mapStateToProps = state => ({
   target: state.AHP.target,
   purpose: state.AHP.purpose,

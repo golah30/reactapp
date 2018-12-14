@@ -8,17 +8,19 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
-    const { spec } = this.props;
+    const { spec, handler } = this.props;
     if (spec) {
       let elem = document.createElement('div');
 
       this.myRef.current.appendChild(elem);
 
-      new vega.View(vega.parse(spec))
+      let view = new vega.View(vega.parse(spec))
         .renderer('canvas')
         .initialize(elem)
-        .hover()
-        .run();
+        .hover();
+
+      if (handler) view.addSignalListener(handler.signal, handler.func);
+      view.run();
     }
   }
   componentDidUpdate(prevProps, prevState) {}
