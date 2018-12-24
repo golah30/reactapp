@@ -62,6 +62,9 @@ class ModalLineGraph extends React.Component {
     const { alternatives, LPRs } = this.props;
     const valuesKorogodin = LPRs.Korogodin;
     const valuesBongard = LPRs.Bongard;
+    const entropyBeginning = LPRs.entropyBeginning;
+    const entropyFinal = LPRs.entropyFinal;
+    const deltaEntropy = LPRs.deltaEntropy;
     return (
       <Container id="modalgraphcontainer" onClick={this.handleClick}>
         <LineContainer>
@@ -111,6 +114,11 @@ class ModalLineGraph extends React.Component {
                 </Row>
               </Body>
             </Table>
+            <Entropy>
+              <Beginning>Начальная энтропия: {entropyBeginning}</Beginning>
+              <Final>Конечная энтропия: {entropyFinal}</Final>
+              <Delta>Убыль энтропии: {deltaEntropy}</Delta>
+            </Entropy>
           </SubContainer>
         </LineContainer>
       </Container>
@@ -122,6 +130,10 @@ class ModalLineGraph extends React.Component {
     }
   };
 }
+const Entropy = styled.div``;
+const Beginning = styled.div``;
+const Final = styled.div``;
+const Delta = styled.div``;
 const SubContainer = styled.div`
   display: flex;
   flex-direction: column;

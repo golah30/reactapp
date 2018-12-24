@@ -65,7 +65,7 @@ class AHPResult extends React.PureComponent {
           />
         </TableContainer>
         <Button
-          title={'Количество информации'}
+          title={'Ценность информации'}
           disabled={false}
           click={this.openModal}
         />
@@ -130,7 +130,10 @@ class AHPResult extends React.PureComponent {
               LPRs={{
                 lpr: data.output,
                 Korogodin: data.valuesKorogodin,
-                Bongard: data.valuesBongard
+                Bongard: data.valuesBongard,
+                entropyBeginning: data.entropyBeginning,
+                entropyFinal: data.entropyFinal,
+                deltaEntropy: data.deltaEntropy
               }}
               close={this.closeModal}
             />

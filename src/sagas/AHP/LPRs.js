@@ -13,6 +13,9 @@ const editData = (currentLPRs, response, payload) => {
   const indicators = resData.indexes;
   const Korogodin = resData.valuesKorogodin;
   const Bongard = resData.valuesBongard;
+  const entropyBeginning = resData.entropyBeginning;
+  const entropyFinal = resData.entropyFinal;
+  const deltaEntropy = resData.deltaEntropy;
 
   if (
     !_.isEqual(LPRs[id].table, table) ||
@@ -24,6 +27,9 @@ const editData = (currentLPRs, response, payload) => {
       indicators,
       Korogodin,
       Bongard,
+      entropyBeginning,
+      entropyFinal,
+      deltaEntropy,
       radio,
       comment
     };

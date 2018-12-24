@@ -98,13 +98,11 @@ class AHPCompare extends React.Component {
             disabled={!this.state.isTableValid}
             click={this.calcLPRs}
           />
-          {pageId !== 0 ? (
-            <Button
-              title={'Количество информации'}
-              disabled={!(LPRs[pageId] && !_.isEqual(LPRs[pageId], {}))}
-              click={this.openModal}
-            />
-          ) : null}
+          <Button
+            title={'Ценность информации'}
+            disabled={!(LPRs[pageId] && !_.isEqual(LPRs[pageId], {}))}
+            click={this.openModal}
+          />
           <Button
             title="Далее"
             disabled={!(LPRs[pageId] && !_.isEqual(LPRs[pageId], {}))}
@@ -114,7 +112,7 @@ class AHPCompare extends React.Component {
         {this.state.showModal ? (
           <Modal>
             <ModalLineGraph
-              alternatives={alternatives}
+              alternatives={pageId === 0 ? criterias : alternatives}
               LPRs={LPRs[pageId]}
               close={this.closeModal}
             />
