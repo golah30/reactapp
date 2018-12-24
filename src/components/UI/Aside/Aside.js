@@ -1,8 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
 import styled from 'styled-components';
 import Pallete from '../../../colors';
-import LeftArrow from '../../UI/Icons/LeftArrow';
-import Bars from '../../UI/Icons/Bars';
+import LeftArrow from '../Icons/LeftArrow';
+import Bars from '../Icons/Bars';
 
 export default class Aside extends PureComponent {
   state = {
