@@ -171,7 +171,7 @@ const Controll = styled.button`
   color: ${Pallete.white};
   font-size: 18px;
   font-weight: 400;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'Roboto', sans-serif;
   transition: color 0.4s, background-color 0.4s;
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
   &:hover {

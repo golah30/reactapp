@@ -32,7 +32,7 @@ class ModalLineGraph extends React.Component {
 
     data.datasets.push({
       data: LPRs.lpr,
-      label: 'ЛПР',
+      label: 'Приоритеты',
       pointBackgroundColor: '#3f51b5',
       borderColor: '#3f51b5',
       backgroundColor: `rgba(159,168,218,0.2)`,
@@ -41,7 +41,7 @@ class ModalLineGraph extends React.Component {
 
     data.datasets.push({
       data: valuesKorogodin,
-      label: 'Kor',
+      label: 'Ценность информации по Корогодину',
       pointBackgroundColor: '#607d8b',
       borderColor: '#607d8b',
       backgroundColor: `rgba(176,190,197,0.2)`,
@@ -50,7 +50,7 @@ class ModalLineGraph extends React.Component {
 
     data.datasets.push({
       data: valuesBongard,
-      label: 'B-Kh',
+      label: 'Ценность информации по Бонгарду - Харкевичу',
       pointBackgroundColor: '#880e4f',
       borderColor: '#880e4f',
       backgroundColor: `rgba(248,187,208,0.2)`,
@@ -69,6 +69,8 @@ class ModalLineGraph extends React.Component {
       <Container id="modalgraphcontainer" onClick={this.handleClick}>
         <LineContainer>
           <SubContainer>
+            <Title>Оценка информации</Title>
+            <SubTitle>Ценность информации</SubTitle>
             <Graph>
               <div>
                 <canvas width="500" height="300" ref={this.myRef} />
@@ -83,7 +85,7 @@ class ModalLineGraph extends React.Component {
                   })}
                 </Row>
                 <Row>
-                  <Cell white>ЛПР</Cell>
+                  <Cell white>Приоритеты</Cell>
                   {alternatives.map((_alt, altId) => {
                     return (
                       <Cell key={altId} white>
@@ -93,7 +95,7 @@ class ModalLineGraph extends React.Component {
                   })}
                 </Row>
                 <Row>
-                  <Cell white>Ценность (Kor)</Cell>
+                  <Cell white>Ценность информации по Корогодину</Cell>
                   {valuesKorogodin.map((val, id) => {
                     return (
                       <Cell key={id} white>
@@ -103,7 +105,7 @@ class ModalLineGraph extends React.Component {
                   })}
                 </Row>
                 <Row>
-                  <Cell white>Ценность (B-Kh)</Cell>
+                  <Cell white>Ценность информации по Бонгарду - Харкевичу</Cell>
                   {valuesBongard.map((val, id) => {
                     return (
                       <Cell key={id} white>
@@ -114,6 +116,7 @@ class ModalLineGraph extends React.Component {
                 </Row>
               </Body>
             </Table>
+            <SubTitle>Информационная энтропия по Шеннону</SubTitle>
             <Entropy>
               <Beginning>Начальная энтропия: {entropyBeginning}</Beginning>
               <Final>Конечная энтропия: {entropyFinal}</Final>
@@ -130,9 +133,27 @@ class ModalLineGraph extends React.Component {
     }
   };
 }
+const Title = styled.div`
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111111;
+`;
+const SubTitle = styled.div`
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111111;
+`;
 const Entropy = styled.div``;
-const Beginning = styled.div``;
-const Final = styled.div``;
+const Beginning = styled.div`
+  margin-bottom: 7px;
+`;
+const Final = styled.div`
+  margin-bottom: 7px;
+`;
 const Delta = styled.div``;
 const SubContainer = styled.div`
   display: flex;
@@ -154,6 +175,7 @@ const Body = styled.tbody``;
 const Row = styled.tr``;
 const Cell = styled.td`
   padding: 5px;
+  max-width: 200px;
   border: 1px solid #348ce8;
   text-align: center;
   color: #111111;
@@ -171,7 +193,7 @@ const LineContainer = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: rgba(0, 74, 159, 0.75);
+  background-color: rgba(11, 37, 69, 0.85);
   position: fixed;
   height: 100%;
   width: 100%;

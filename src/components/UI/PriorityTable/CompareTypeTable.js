@@ -65,7 +65,7 @@ export default class CompareTypeTable extends PureComponent {
                   <TitleCell>{colId + 1}</TitleCell>
                 </Fragment>
               ))}
-              <TitleCell>ЛПр.</TitleCell>
+              <TitleCell>Приоритеты</TitleCell>
             </Row>
             <Fragment>
               {comparedItems.map((item, rowId) => (

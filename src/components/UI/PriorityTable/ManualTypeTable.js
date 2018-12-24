@@ -71,7 +71,7 @@ export default class ManualTypeTable extends PureComponent {
                   <TitleCell>{colId + 1}</TitleCell>
                 </Fragment>
               ))}
-              <TitleCell>ЛПр.</TitleCell>
+              <TitleCell>Приоритеты</TitleCell>
             </Row>
             {comparedItems.map((item, rowId) => (
               <Row key={rowId}>

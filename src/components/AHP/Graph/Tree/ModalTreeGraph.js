@@ -38,7 +38,7 @@ const TreeContainer = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: rgba(0, 74, 159, 0.75);
+  background-color: rgba(11, 37, 69, 0.85);
   position: fixed;
   height: 100%;
   width: 100%;
