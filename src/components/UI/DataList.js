@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import Button from './Button';
+import CloseIcon from './Icons/CloseIcon';
+import Pallete from '../../colors';
 
 export default class DataList extends React.PureComponent {
   state = {
@@ -36,14 +39,7 @@ export default class DataList extends React.PureComponent {
     const { title, itemTitle } = this.props;
     return (
       <Data>
-        <Title>
-          {title}
-          <TitleI
-            className="fa fa-plus"
-            onClick={this.addItem}
-            aria-hidden="true"
-          />
-        </Title>
+        <Title>{title}</Title>
         <List>
           {this.state.items.map((item, key) => (
             <Item
@@ -56,6 +52,11 @@ export default class DataList extends React.PureComponent {
             />
           ))}
         </List>
+        <Button
+          click={this.addItem}
+          title="Добавить"
+          disabled={!(this.state.items.length < 10)}
+        />
       </Data>
     );
   }
@@ -71,45 +72,77 @@ class Item extends React.PureComponent {
     if (click) click(id);
   };
   render() {
-    const { title, value, id } = this.props;
+    const { title, value } = this.props;
     return (
       <ItemContainer>
-        <ItemTitle>{`${title}${id + 1}`}</ItemTitle>
-        <ItemInput
-          type="text"
-          name={title}
-          value={value ? value : ''}
-          onChange={this.handleChange}
-        />
+        <InputContainer>
+          <ItemInput
+            type="text"
+            name={title}
+            value={value ? value : ''}
+            onChange={this.handleChange}
+          />
+        </InputContainer>
         <ItemButton onClick={this.handleClick}>
-          <ItemI className="fa fa-plus" aria-hidden="true" />
+          <CloseIcon width="20" height="20" stroke="#c5283d" />
         </ItemButton>
       </ItemContainer>
     );
   }
 }
-const ItemI = styled.i`
-  transform: rotate(45deg);
-  color: #f25c5f;
-  font-size: 20px;
-  transition: color 0.5s;
-  cursor: pointer;
-  &:hover {
-    color: #ba2635;
-  }
+const ItemContainer = styled.li`
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border: 2px solid ${Pallete.blue};
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 3px;
 `;
-const TitleI = styled.i`
-  color: #62a3ff;
-  font-size: 20px;
-  float: right;
-  transition: color 0.5s;
-  margin-right: 2px;
+const InputContainer = styled.div`
+  height: 100%;
+`;
+const ItemInput = styled.input`
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  height: 100%;
+  width: 180px;
+  font-size: 16px;
+`;
+const ItemButton = styled.div`
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 100%;
+  border-left: 2px solid ${Pallete.blue};
+  background-color: transparent;
+  transition: background-color 0.3s;
   cursor: pointer;
+  & svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    stroke: ${Pallete.blue};
+    transition: stroke 0.5s;
+  }
   &:hover {
-    color: #004a9f;
+    background-color: ${Pallete.blue};
+    & svg {
+      stroke: ${Pallete.white};
+    }
   }
 `;
 const Data = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: #111111;
   width: 230px;
 `;
@@ -117,32 +150,11 @@ const List = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 230px;
 `;
-const Title = styled.h3`
+const Title = styled.div`
   margin: 0;
   margin-bottom: 9px;
   font-size: 20px;
-  padding-left: 35px;
   font-weight: normal;
-`;
-const ItemContainer = styled.li`
-  margin-bottom: 25px;
-  width: 100%;
-`;
-const ItemTitle = styled.span`
-  display: inline-block;
-  width: 15%;
-  font-size: 18px;
-`;
-const ItemInput = styled.input`
-  border: none;
-  outline: none;
-  border-bottom: 1px solid #677db7;
-  font-size: 16px;
-  width: 70%;
-`;
-const ItemButton = styled.div`
-  display: inline-block;
-  text-align: right;
-  width: 10%;
 `;

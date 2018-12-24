@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { AltCrDataTable, GPRTable } from '../../UI';
 import Diagram from '../Graph/Diagram/Diagram';
@@ -39,7 +39,7 @@ class AHPResult extends React.PureComponent {
     }
 
     return (
-      <Fragment>
+      <Container>
         <TextContainer>
           <TextTitle>Проект:</TextTitle>
           <Text>{target}</Text>
@@ -122,7 +122,6 @@ class AHPResult extends React.PureComponent {
             />
           </RadialDiagramLabel>
         </RadialDiagramContainer>
-        <BottomContainer />
         {this.state.showModal ? (
           <Modal>
             <ModalLineGraph
@@ -139,7 +138,7 @@ class AHPResult extends React.PureComponent {
             />
           </Modal>
         ) : null}
-      </Fragment>
+      </Container>
     );
   }
   handleDiagramHover = (_name, value) => {
@@ -152,6 +151,15 @@ class AHPResult extends React.PureComponent {
     this.setState({ showModal: false });
   };
 }
+const Container = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 50px 10px 30px 10px;
+`;
 const RadialLabel = styled.div`
   display: inline-block;
   & + div {
@@ -180,15 +188,13 @@ const TextTitle = styled.span`
 const Text = styled.span``;
 const TableLabel = styled.div`
   margin-bottom: 10px;
+  text-align: center;
 `;
 const TableContainer = styled.div`
-  margin-bottom: 30px;
-`;
-const BottomContainer = styled.div`
   display: flex;
-  max-width: 475px;
-  justify-content: space-between;
-  margin-bottom: 200px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
 `;
 const mapStateToProps = state => ({
   target: state.AHP.target,

@@ -52,11 +52,11 @@ class AHPInput extends React.PureComponent {
     return (
       <Container>
         <Description>
-          Для решения задачи необходимы следущие входные данные:
+          Для решения задачи необходимы следущие входные данные
         </Description>
         <TextInputContainer>
           <TextInput
-            title={'Цель:'}
+            title={'Цель'}
             limit={80}
             name={'target'}
             value={this.state.target}
@@ -91,7 +91,7 @@ class AHPInput extends React.PureComponent {
         </DataLists>
         <TextInputContainer>
           <TextInput
-            title={'Комментарии:'}
+            title={'Комментарии'}
             limit={100}
             name={'comment'}
             value={this.state.comment}
@@ -100,7 +100,7 @@ class AHPInput extends React.PureComponent {
         </TextInputContainer>
         <ButtonContainer>
           <Button
-            title="Далее"
+            title="Продолжить"
             disabled={!this.state.isValid}
             click={this.handleSubmit}
           />
@@ -144,19 +144,27 @@ const DataLists = styled.div`
   margin-bottom: 40px;
 `;
 const TextInputContainer = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 `;
-const Container = styled.div``;
+const Container = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 50px 10px;
+`;
 const Description = styled.p`
   margin: 0;
   font-size: 18px;
   margin-bottom: 37px;
 `;
 const ButtonContainer = styled.div`
+  margin-top: 50px;
   display: flex;
   max-width: 475px;
   justify-content: space-between;
-  margin-bottom: 200px;
 `;
 
 const mapStateToProps = state => ({

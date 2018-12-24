@@ -37,7 +37,7 @@ class AHPCompare extends React.Component {
     const { criterias, alternatives, LPRs } = this.props;
 
     return (
-      <Fragment>
+      <Container>
         <Heading>
           {pageId === 0 ? (
             <Fragment>
@@ -74,7 +74,6 @@ class AHPCompare extends React.Component {
           comparedItems={pageId === 0 ? criterias : alternatives}
           change={this.handleTableChange}
         />
-
         <Indicators
           values={
             LPRs[pageId] && LPRs[pageId].indicators
@@ -82,7 +81,6 @@ class AHPCompare extends React.Component {
               : null
           }
         />
-
         <TextInputContainer>
           <TextInput
             title={'Комментарии:'}
@@ -118,7 +116,7 @@ class AHPCompare extends React.Component {
             />
           </Modal>
         ) : null}
-      </Fragment>
+      </Container>
     );
   }
   openModal = () => {
@@ -170,7 +168,15 @@ class AHPCompare extends React.Component {
     this.setState({ radio: radio });
   };
 }
-
+const Container = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 50px 10px;
+`;
 const Heading = styled.div`
   margin-bottom: 40px;
 `;
@@ -191,9 +197,13 @@ const RadioGroupContainer = styled.div`
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  max-width: 600px;
   justify-content: space-between;
-  margin-bottom: 200px;
+  & button {
+    margin-left: 10px;
+  }
+  & button:nth-child(1) {
+    margin-left: 0px;
+  }
 `;
 
 const mapStateToProps = state => ({

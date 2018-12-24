@@ -1,93 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Pallete from '../../colors';
 
 export class Footer extends React.PureComponent {
   render() {
     return (
       <StyledFooter>
         <FooterContainer>
-          <FooterUpper>
-            <Category>
-              <CategoryTitle>
-                <StyledLink title="18" to="">
-                  О проекте
-                </StyledLink>
-              </CategoryTitle>
-              <LinkList>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    История проекта
-                  </StyledLink>
-                </LinkListElement>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Кафедра ИТС
-                  </StyledLink>
-                </LinkListElement>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Exigen Agile Practices
-                  </StyledLink>
-                </LinkListElement>
-              </LinkList>
-            </Category>
-            <Category>
-              <CategoryTitle>
-                <StyledLink title="18" to="">
-                  Помощь
-                </StyledLink>
-              </CategoryTitle>
-              <LinkList>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    С чего начать?
-                  </StyledLink>
-                </LinkListElement>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Библиотека методов
-                  </StyledLink>
-                </LinkListElement>
-              </LinkList>
-            </Category>
-            <Category>
-              <CategoryTitle>
-                <StyledLink title="18" to="">
-                  Исследования
-                </StyledLink>
-              </CategoryTitle>
-              <LinkList>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Прикладные задачи
-                  </StyledLink>
-                </LinkListElement>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Публикации
-                  </StyledLink>
-                </LinkListElement>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Работы студентов
-                  </StyledLink>
-                </LinkListElement>
-                <LinkListElement>
-                  <StyledLink title="14" to="">
-                    Блог
-                  </StyledLink>
-                </LinkListElement>
-              </LinkList>
-            </Category>
-            <Category>
-              <CategoryTitle>
-                <StyledLink title="18" to="">
-                  Приложение
-                </StyledLink>
-              </CategoryTitle>
-            </Category>
-          </FooterUpper>
           <FooterLower>
             <Socials>
               <Social>
@@ -108,66 +28,54 @@ export class Footer extends React.PureComponent {
             </Socials>
             <Copy>
               <i className="fa fa-copyright" aria-hidden="true" />
-              <span>2011 - 2017</span> NooTron teams
+              <span> 2011 - 2017</span> NooTron teams
             </Copy>
+            <Links>
+              <StyledLink to="/">О проекте</StyledLink>
+              <StyledLink to="/">Кафедра ИТС</StyledLink>
+              <StyledLink to="/">Приложение</StyledLink>
+            </Links>
           </FooterLower>
         </FooterContainer>
       </StyledFooter>
     );
   }
 }
-
-const StyledFooter = styled.footer`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: #004a9f;
-`;
-const FooterContainer = styled.div`
-  min-height: 190px;
-  padding: 0 100px;
-`;
-const FooterUpper = styled.div`
+const Links = styled.div`
   display: flex;
+  margin: auto 0;
   justify-content: space-between;
-  padding-top: 10px;
-`;
-const LinkList = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-`;
-const LinkListElement = styled.li`
-  margin-bottom: 5px;
+  width: 400px;
 `;
 const StyledLink = styled(Link)`
-  display: block;
-  color: #fafafa;
-  text-decoration: none;
   font-family: 'Roboto', sans-serif;
-  font-size: ${props => props.title + 'px'};
+  font-size: 14px;
   font-weight: 400;
+  color: ${Pallete.white};
+  text-decoration: none;
   transition: color 0.5s;
+  text-transform: uppercase;
   &:hover {
-    color: #ff8e8c;
+    color: ${Pallete.hoverRed};
   }
 `;
-const Category = styled.div``;
-const CategoryTitle = styled.h4`
-  margin: 0;
-  padding: 0;
-  margin-bottom: 20px;
+const StyledFooter = styled.footer`
+  width: 100%;
+  background-color: ${Pallete.darkBlue};
+`;
+const FooterContainer = styled.div`
+  min-height: 30px;
+  padding: 0 20px;
 `;
 const FooterLower = styled.div`
   display: flex;
   justify-content: space-between;
   align-content: center;
   align-items: center;
-  padding-bottom: 10px;
 `;
 const Copy = styled.div`
-  color: rgba(250, 250, 250, 0.8);
-  font-size: 16px;
+  color: ${Pallete.white};
+  font-size: 14px;
   font-style: italic;
   font-weight: 300;
 `;
@@ -177,6 +85,7 @@ const Socials = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 400px;
 `;
 const Social = styled.li`
   margin-right: 10px;
@@ -184,21 +93,22 @@ const Social = styled.li`
 const DefaultLink = styled.a`
   display: block;
   position: relative;
-  background: #fafafa;
+  background: transparent;
   color: #111111;
   font-size: 26px;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   transition: background-color 0.5s, color 0.5s;
   & i {
     position: absolute;
+    color: ${Pallete.white};
     top: 50%;
     left: 50%;
+    transition: color 0.5s;
     transform: translate(-50%, -50%);
   }
-  &:hover {
-    color: #fafafa;
-    background-color: ${props =>
+  &:hover i {
+    color: ${props =>
       props.vk ? '#507299' : props.google ? '#DB4437' : '#0077B5'};
   }
 `;

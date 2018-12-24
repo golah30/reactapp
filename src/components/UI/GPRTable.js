@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Pallete from '../../colors';
 
 class GPRTable extends React.PureComponent {
   state = {
@@ -61,14 +62,15 @@ const Table = styled.table`
 const Body = styled.tbody``;
 const Row = styled.tr`
   background-color: ${props =>
-    props.active ? 'rgba(255,0,0,0.4)' : 'transparent'};
+    props.active ? Pallete.hoverRed : 'transparent'};
 `;
 const Cell = styled.td`
   padding: 5px;
-  border: 1px solid #348ce8;
+  border: 1px solid ${Pallete.blue};
   text-align: center;
-  color: #111111;
-  background-color: ${props => (props.white ? 'transparent' : '#62a3ff')};
+  color: ${props => (props.white ? '#111111' : Pallete.white)};
+  background-color: ${props =>
+    props.white ? 'transparent' : Pallete.lightBlue};
 `;
 
 export default GPRTable;

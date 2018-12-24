@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Pallete from '../../colors';
 
 class Indicators extends React.PureComponent {
   state = {
@@ -31,20 +32,22 @@ const Container = styled.table`
   margin-bottom: 30px;
   text-align: center;
   border-collapse: collapse;
+  border-radius: 2px;
+  overflow: hidden;
 `;
 const Header = styled.th`
   box-sizing: border-box;
   padding: 3px 11px;
-  color: #fafafa;
+  color: ${Pallete.white};
   font-weight: normal;
   font-size: 18px;
-  border: 1px solid #438fec;
-  background-color: #62a3ff;
+  border: 1px solid ${Pallete.blue};
+  background-color: ${Pallete.lightBlue};
 `;
 const Cell = styled.td`
   box-sizing: border-box;
   padding: 3px 11px;
-  border: 1px solid #438fec;
+  border: 1px solid ${Pallete.blue};
   font-size: 18px;
   text-align: center;
 `;

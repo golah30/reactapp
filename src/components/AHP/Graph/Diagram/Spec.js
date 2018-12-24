@@ -1,3 +1,5 @@
+import Pallete from '../../../../colors';
+
 export const buildVegaSpec = (size, data) => {
   const table = buildTableSpec(data.alt, data.outputRel);
 
@@ -69,10 +71,10 @@ const spec = (w, h, table) => {
             y2: { scale: 'yscale', value: 0 }
           },
           update: {
-            fill: { value: 'steelblue' }
+            fill: { value: Pallete.lightBlue }
           },
           hover: {
-            fill: { value: 'red' }
+            fill: { value: Pallete.red }
           }
         }
       },

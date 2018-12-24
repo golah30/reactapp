@@ -1,24 +1,26 @@
 import React, { Component, Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import _ from 'lodash';
+import alternatives from '../../../ducks/AHP/reducers/alternatives';
 import { setAhpMenu } from '../../../ducks/AHP';
+import Pallete from '../../../colors';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import { SubHeader, AsideMenu } from '../../UI';
+import { AsideMenu } from '../../UI';
 import AHPBegin from '../AHPBegin';
 import AHPInput from '../AHPInput';
 import AHPCompare from '../AHPCompare';
 import AHPResult from '../AHPResult';
 import Modal from '../../Modal';
 import ModalTreeGraph from '../Graph/Tree/ModalTreeGraph';
-import styled from 'styled-components';
-import _ from 'lodash';
-import alternatives from '../../../ducks/AHP/reducers/alternatives';
 
 class AHPbody extends Component {
   state = {
     showModal: false,
-    isModalGraphAvailable: false
+    isModalGraphAvailable: false,
+    asideSize: 0
   };
   componentDidMount() {
     this.props.history.push('/ahp/begin');
@@ -45,24 +47,28 @@ class AHPbody extends Component {
     const { menu } = this.props;
     return (
       <Fragment>
-        <Header />
-        <SubHeader
-          title={'Метод анализа иерархий'}
-          controll
-          controllTitle="Структура задачи"
-          click={this.openModal}
-          disabled={!this.state.isModalGraphAvailable}
-        />
-        <Container>
+        <Header
+          hasAside={true}
+          handleAsideMode={this.handleAsideMode}
+          asideSubTitle={'Метод анализа иерархий'}
+        >
           <AsideMenu data={menu} />
-          <Content>
-            <Switch>
-              <Route path="/ahp/begin" exact component={AHPBegin} />
-              <Route path="/ahp/input" exact component={AHPInput} />
-              <Route path="/ahp/compare/:id" exact component={AHPCompare} />
-              <Route path="/ahp/result" exact component={AHPResult} />
-            </Switch>
-          </Content>
+        </Header>
+        <Container margin={this.state.asideSize}>
+          <ControllContainer disabled={!this.state.isModalGraphAvailable}>
+            <Controll
+              disabled={!this.state.isModalGraphAvailable}
+              onClick={this.openModal}
+            >
+              Структура задачи
+            </Controll>
+          </ControllContainer>
+          <Switch>
+            <Route path="/ahp/begin" exact component={AHPBegin} />
+            <Route path="/ahp/input" exact component={AHPInput} />
+            <Route path="/ahp/compare/:id" exact component={AHPCompare} />
+            <Route path="/ahp/result" exact component={AHPResult} />
+          </Switch>
         </Container>
         {this.state.showModal ? (
           <Modal>
@@ -136,16 +142,48 @@ class AHPbody extends Component {
     }
     this.props.setAhpMenu(menu);
   };
+  handleAsideMode = size => {
+    this.setState({ asideSize: size });
+  };
 }
 
-const Container = styled.div`
-  padding: 0 100px;
+const ControllContainer = styled.div`
+  background-color: ${props =>
+    props.disabled ? 'tranparent' : Pallete.darkBlue};
   display: flex;
-  flex-flow: row nowrap;
+  justify-content: flex-end;
+  width: 100%;
 `;
-const Content = styled.div`
-  margin-top: 50px;
-  margin-left: 30px;
+const Controll = styled.button`
+  display: block;
+  box-sizing: border-box;
+  border: none;
+  width: 200px;
+  padding-top: 7px;
+  padding-bottom: 9px;
+  padding-left: 10px;
+  padding-right: 20px;
+  height: 40px;
+  text-align: right;
+  margin-left: 0;
+  opacity: ${props => (props.disabled ? 0 : 1)};
+  background-color: ${Pallete.blue};
+  color: ${Pallete.white};
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Playfair Display', sans-serif;
+  transition: color 0.4s, background-color 0.4s;
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
+  &:hover {
+    background-color: ${Pallete.darkBlue};
+    color: ${Pallete.white};
+  }
+`;
+const Container = styled.div`
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  margin-left: ${props => props.margin + 'px'};
 `;
 
 const mapStateToProps = state => ({

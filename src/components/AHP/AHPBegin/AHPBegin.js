@@ -23,9 +23,12 @@ class AHPBegin extends React.PureComponent {
     return (
       <Container>
         <Description>
-          Этот метод - для задач выбора. Работает с трехуровневой иерархией.
-          Входные данные: цель; объекты, среди которых необходимо сделать выбор
-          (до 10), критерии сравнения (до 10).
+          <DescriptionP>Этот метод - для задач выбора.</DescriptionP>
+          <DescriptionP>Работает с трехуровневой иерархией.</DescriptionP>
+          <DescriptionP>
+            Входные данные: цель; объекты, среди которых необходимо сделать
+            выбор (до 10), критерии сравнения (до 10).
+          </DescriptionP>
         </Description>
         <TextInput
           title={'Введите имя проекта'}
@@ -36,7 +39,7 @@ class AHPBegin extends React.PureComponent {
         />
         <ButtonContainer>
           <Button
-            title="Далее"
+            title="Продолжить"
             disabled={this.state.target.length === 0}
             click={this.handleSubmit}
           />
@@ -46,17 +49,30 @@ class AHPBegin extends React.PureComponent {
   }
 }
 
-const Container = styled.div``;
-const Description = styled.p`
+const Container = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 50px 10px;
+`;
+const Description = styled.div`
+  display: inline-block;
   margin: 0;
-  font-size: 18px;
   margin-bottom: 50px;
 `;
+const DescriptionP = styled.p`
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+`;
 const ButtonContainer = styled.div`
+  margin-top: 50px;
   display: flex;
   max-width: 475px;
   justify-content: space-between;
-  margin-bottom: 200px;
 `;
 
 const mapStateToProps = state => ({

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Pallete from '../../colors';
 
 export default class Button extends React.PureComponent {
   render() {
@@ -10,14 +11,6 @@ export default class Button extends React.PureComponent {
     );
   }
 }
-
-/* <Button
-  disabled={false}
-  click={() => {
-    this.props.history.push('/ahp');
-  }}
-/> */
-// simple usage
 const StyledButton = styled.button`
   box-sizing: border-box;
   min-width: 175px;
@@ -25,12 +18,11 @@ const StyledButton = styled.button`
   padding: 11px 5px;
   transition: background-color 0.5s;
   text-align: center;
-  text-transform: uppercase;
   color: #fafafa;
   border: none;
-  border-radius: 9px;
-  background-color: #ba2635;
-  font-size: 14px;
+  border-radius: 3px;
+  background-color: ${Pallete.blue};
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   &:active {
@@ -38,7 +30,7 @@ const StyledButton = styled.button`
   }
   &:hover {
     outline: none;
-    background-color: #f25c5f;
+    background-color: ${Pallete.darkBlue};
   }
   &:disabled {
     cursor: default;

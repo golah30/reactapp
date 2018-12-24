@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import Pallete from '../../colors';
 
 export default class AsideMenu extends React.Component {
   render() {
@@ -38,24 +39,25 @@ export default class AsideMenu extends React.Component {
   };
 }
 
-const Aside = styled.div``;
+const Aside = styled.div`
+  width: 100%;
+`;
 const Menu = styled.ul`
   box-sizing: border-box;
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-top: 50px;
-  width: 455px;
-  border-right: 1px solid #62a3ff;
+  width: 100%;
 `;
 const Li = styled.li`
   box-sizing: border-box;
   padding-top: 10px;
   padding-bottom: 13px;
-  padding-left: 25px;
-  font-size: 20px;
+  padding-left: 10px;
+  font-size: 18px;
   font-weight: 400;
-  border-left: 5px solid transparent;
+  color: ${Pallete.white};
+  font-family: 'Playfair Display', sans-serif;
   cursor: 'default';
 `;
 const Link = styled.div`
@@ -63,27 +65,28 @@ const Link = styled.div`
     display: block;
     box-sizing: border-box;
     text-decoration: none;
-    padding-top: 10px;
-    padding-bottom: 13px;
-    padding-left: 25px;
-    margin-left: ${props => (props.isSubItem ? '25px' : '0')};
-    font-size: 20px;
+    padding-top: 12px;
+    padding-bottom: 11px;
+    padding-left: ${props => (props.isSubItem ? '25px' : '10px')};
+    margin-left: 0;
+    font-size: 18px;
     font-weight: 400;
-    border-left: 5px solid transparent;
-    transition: color 0.5s, border 0.5s;
-    color: #111111;
+    font-family: 'Playfair Display', sans-serif;
+    background-color: ${props =>
+      props.isAvailable ? Pallete.green : 'transparent'};
+    color: ${Pallete.white};
+    transition: color 0.5s, border 0.5s, background-color 0.5s;
     pointer-events: ${props => (props.isAvailable ? 'auto' : 'none')};
-    border-color: ${props => (props.isAvailable ? '#62A3FF' : 'transparent')};
     cursor: ${props => (props.isAvailable ? 'pointer' : 'default')};
     &:hover {
-      border-color: ${props => (props.isAvailable ? '#004A9F' : 'transparent')};
-      color: ${props => (props.isAvailable ? '#004A9F' : '#111111')};
+      background-color: ${props =>
+        props.isAvailable ? Pallete.white : 'transparent'};
+      color: ${props => (props.isAvailable ? Pallete.darkBlue : Pallete.white)};
     }
   }
 `;
 const Active = {
-  borderColor: '#BA2635',
-  fontWeight: 700,
-  color: '#BA2635',
+  backgroundColor: Pallete.red,
+  color: Pallete.white,
   cursor: 'pointer'
 };
